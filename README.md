@@ -8,10 +8,10 @@ All implementations strictly adhere to POSIX standards, zero-leak memory policie
 
 ## 📂 Repository Index
 
-| Project | Domain | Core Concepts & Technologies |
-| :--- | :--- | :--- |
-| **[ft_ping](./01_ft_ping)** | Low-Level Networking | Raw Sockets (`SOCK_RAW`), ICMP protocol, RFC 1071 checksums, POSIX signals (`SIGALRM`), RTT statistics ($min/avg/max/mdev$). Based on GNU `inetutils-2.0`. |
-| **[ft_traceroute](./02_ft_traceroute)** | Network Diagnostics | Hop-by-hop route discovery, TTL manipulation (`IP_TTL`), ICMP error handling (TTL Exceeded), blocking I/O timeouts (`SO_RCVTIMEO`). |
+| Project | Domain | Core Concepts & Technologies | Estimated work time |
+| :--- | :--- | :--- | :--- |
+| **[ft_ping](./01_ft_ping)** | Low-Level Networking | Raw Sockets (`SOCK_RAW`), ICMP protocol, RFC 1071 checksums, POSIX signals (`SIGALRM`), RTT statistics ($min/avg/max/mdev$). Based on GNU `inetutils-2.0`. | about 49 hours |
+| **[ft_traceroute](./02_ft_traceroute)** | Network Diagnostics | Hop-by-hop route discovery, TTL manipulation (`IP_TTL`), ICMP error handling (TTL Exceeded), blocking I/O timeouts (`SO_RCVTIMEO`). | about 49 hours |
 
 *(Additional advanced systems and infrastructure projects will be indexed here as they are integrated).*
 
