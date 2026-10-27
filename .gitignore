@@ -59,3 +59,6 @@ dkms.conf
 .vscode
 .venv
 git_push.sh
+
+# Tests:
+*.log

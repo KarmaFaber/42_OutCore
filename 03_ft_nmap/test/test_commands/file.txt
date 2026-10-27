@@ -1,0 +1,9 @@
+8.8.8.8
+127.0.0.1
+google.com
+127.1
+*
+google.fr
+heloword.com
+999.999.999.999
+abc.def.ghi.jkl
