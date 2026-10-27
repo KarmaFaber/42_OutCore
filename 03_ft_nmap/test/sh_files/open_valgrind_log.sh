@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Get the most recent Valgrind log file
-latest_log=$(find -t test/valgrind_outputs/valgrind_output_*.log | head -n 1)
+latest_log=$(find test/valgrind_outputs/valgrind_output_*.log | head -n 1)
 
 # Check if the file exists
 if [ -f "$latest_log" ]; then

@@ -56,16 +56,16 @@
 
 ### 🔹 File 
 ```bash
-./ft_nmap --file test/file.txt 
-./ft_nmap --file test/file.txt --ports 80,443 --scan SYN,ACK --speedup 10
-./ft_nmap --file test/file.txt --ports 1,3-5,8,10-12 --speedup 20
-./ft_nmap --file test/file.txt --speedup 50 --scan SYN,ACK 
-./ft_nmap --file test/file.txt --scan SYN,ACK,FIN,XMAS,UDP --ports 22,80-90,443
+./ft_nmap --file test/test_commands/file.txt 
+./ft_nmap --file test/test_commands/file.txt --ports 80,443 --scan SYN,ACK --speedup 10
+./ft_nmap --file test/test_commands/file.txt --ports 1,3-5,8,10-12 --speedup 20
+./ft_nmap --file test/test_commands/file.txt --speedup 50 --scan SYN,ACK 
+./ft_nmap --file test/test_commands/file.txt --scan SYN,ACK,FIN,XMAS,UDP --ports 22,80-90,443
 ```
 
 ---
 
-## ❌ CASOS QUE DEBEN FALLAR (invalidos)
+## ❌ CASOS QUE DEBEN FALLAR en el **PARSEO** (invalidos)
 ### 🔴 IP inválida
 ```bash
 ./ft_nmap --ip 999.999.999.999 --ports 80

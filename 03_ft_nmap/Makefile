@@ -82,9 +82,9 @@ re: fclean all
 
 valgrind: all
 	@echo "$(CURRENT_COLOR)➵⤐──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌──Running Valgrind..──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌──$(RESET)"
-	$(VALGRIND) ./$(NAME) --ip 8.8.8.8 --ports 2147483648-2147483649
 	@mkdir -p test/valgrind_outputs
-	@test/sh_files/./open_valgrind_log.sh
+	-sudo $(VALGRIND) ./$(NAME) --ip 8.8.8.8 --ports 2147483648
+	@-test/sh_files/./open_valgrind_log.sh
 	@echo "$(CURRENT_COLOR)➵⤐╌╌➣⋆➣╌─⤏➵•➵⤐─╌╌➣⋆➣── Valgrind completed. Check valgrind_output.log for details. ─╌➣⋆➣╌─⤏➵•➵⤐─╌╌➣⋆➣╌╌─$(RESET)"
 
 clean_valgrind:
