@@ -6,12 +6,19 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:06:44 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 11:06:47 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/27 14:10:45 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nmap.h"
 
+/**
+ * @brief Validates an IP address and stores it in the configuration.
+ *
+ * @param arg IP address to validate.
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 on error.
+ */
 int parse_ip_arg(char *arg, t_nmap_cfg *cfg)
 {
 	if (!is_valid_ip(arg))
@@ -23,6 +30,13 @@ int parse_ip_arg(char *arg, t_nmap_cfg *cfg)
 	return (0);
 }
 
+/**
+ * @brief Validates and stores a file path in the configuration.
+ *
+ * @param arg Path to the file to validate.
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 on error.
+ */
 int parse_file_arg(char *arg, t_nmap_cfg *cfg)
 {
 	FILE	*fp;
@@ -39,6 +53,13 @@ int parse_file_arg(char *arg, t_nmap_cfg *cfg)
 	return (0);
 }
 
+/**
+ * @brief Parses and sets the maximum number of threads.
+ *
+ * @param arg String representing the thread count.
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 on error.
+ */
 int parse_speedup_arg(char *arg, t_nmap_cfg *cfg)
 {
 	cfg->threads = parse_int_range(arg, 0, 250);
@@ -52,6 +73,13 @@ int parse_speedup_arg(char *arg, t_nmap_cfg *cfg)
 	return (0);
 }
 
+/**
+ * @brief Parses comma-separated scan types and updates the configuration.
+ *
+ * @param arg Comma-separated list of scan types.
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 on error.
+ */
 int parse_scan_arg(char *arg, t_nmap_cfg *cfg)
 {
 	char	*copy;

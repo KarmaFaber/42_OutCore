@@ -6,12 +6,18 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:06:52 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 11:06:55 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/27 14:12:37 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nmap.h"
 
+/**
+ * @brief Checks whether a string contains a valid hostname.
+ *
+ * @param str String to validate.
+ * @return 1 if valid, 0 otherwise.
+ */
 int	is_valid_hostname(const char *str)
 {
 	int	i;
@@ -34,6 +40,12 @@ int	is_valid_hostname(const char *str)
 	return (1);
 }
 
+/**
+ * @brief Checks whether a string contains only digits and dots.
+ *
+ * @param str String to validate.
+ * @return 1 if numeric, 0 otherwise.
+ */
 int	is_numeric_address(const char *str)
 {
 	int	i;
@@ -48,6 +60,12 @@ int	is_numeric_address(const char *str)
 	return (1);
 }
 
+/**
+ * @brief Validates a target IP address or hostname.
+ *
+ * @param line Target address or hostname to validate.
+ * @return 1 if valid, 0 otherwise.
+ */
 int	validate_target_line(const char *line)
 {
 	if (is_numeric_address(line))
@@ -66,6 +84,12 @@ int	validate_target_line(const char *line)
 	return (1);
 }
 
+/**
+ * @brief Reads a target file and executes scans for valid entries.
+ *
+ * @param map Pointer to the scan configuration and data.
+ * @return 0 on success, 1 if the file cannot be opened.
+ */
 int	run_file_scans(t_map *map)
 {
 	FILE	*fp;

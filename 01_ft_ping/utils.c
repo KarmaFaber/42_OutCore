@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   utils.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzolotar <mzolotar@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/10 22:31:13 by mzolotar          #+#    #+#             */
-/*   Updated: 2026/06/11 00:51:09 by mzolotar         ###   ########.fr       */
+/*   Updated: 2026/10/27 12:27:56 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,12 +35,6 @@ void	init_ping(t_ping *ping)
 	ping->rtt_sum_sq = 0.0;
 	memset(&ping->start_time, 0, sizeof(struct timeval));
 }
-
-//SOCKET
-//socket(int domain, int type, int protocol)
-//domain: AF_INET (IPv4). Como ya lo configuraste en hints.ai_family, podemos usar directamente ft_ping.addrinfo->ai_family.  
-//type: SOCK_RAW.
-//protocol: IPPROTO_ICMP (vive en <netinet/in.h>).
 
 /**
  * @brief Creates a raw ICMP socket and sets its reception timeout to 1 second.

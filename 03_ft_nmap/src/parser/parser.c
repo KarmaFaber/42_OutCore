@@ -6,12 +6,18 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:34 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 11:07:37 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/27 14:17:25 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nmap.h"
 
+/**
+ * @brief Validates the configuration and sets default values.
+ *
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 if the configuration is invalid.
+ */
 int	validate_config(t_nmap_cfg *cfg)
 {
 	int	i;
@@ -37,6 +43,9 @@ int	validate_config(t_nmap_cfg *cfg)
 	return (0);
 }
 
+/**
+ * @brief Maps command-line options to their handlers.
+ */
 static const t_arg_map g_args[] =
 {
 	{"--ip", 1, handle_ip},
@@ -52,6 +61,12 @@ static const t_arg_map g_args[] =
 	{NULL, 0, NULL}
 };
 
+/**
+ * @brief Finds the argument mapping for a given option.
+ *
+ * @param key Command-line option to find.
+ * @return Pointer to the matching mapping, or NULL if not found.
+ */
 static t_arg_map	*find_arg(const char *key)
 {
 	int i = 0;
@@ -65,6 +80,14 @@ static t_arg_map	*find_arg(const char *key)
 	return (NULL);
 }
 
+/**
+ * @brief Parses command-line arguments and validates the configuration.
+ *
+ * @param argc Number of command-line arguments.
+ * @param argv Array of command-line argument strings.
+ * @param map Pointer to the scan data and configuration.
+ * @return 0 on success, 1 on error.
+ */
 int parse_args(int argc, char **argv, t_map *map)
 {
 	int			i;

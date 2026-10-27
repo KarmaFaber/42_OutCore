@@ -28,7 +28,7 @@ INC_DIR     := inc
 
 INCLUDES    := -I$(INC_DIR)
 
-VALGRIND    := valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --error-limit=no --log-file=test/valgrind_outputs/valgrind_output_$(shell date +%Y%m%d_%H%M%S).log -s
+VALGRIND    := valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=all --error-limit=no --log-file=test/valgrind_outputs/valgrind_output_$(shell date +%Y%m%d_%H%M%S).log -s
 
 #◉───▣───▢◇▢───▣───◉•◉───▣───▢  ft_nmap srcs ▢───▣───◉•◉───▣───▢◇▢───▣───◉#
 

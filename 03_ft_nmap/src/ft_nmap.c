@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:08:04 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 11:08:06 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/27 14:23:24 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ int	execute_scan_for_target(char *target, t_map *map)
 	//DEBUG TEMPORAL
 	print_scan_results(map, 80, STATE_OPEN); // Ejemplo de impresión de resultados
 	
-
 	free(map->cfg.ip);
 	return (0);
 }

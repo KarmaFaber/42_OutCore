@@ -6,12 +6,17 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:41 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 11:07:43 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/27 14:28:29 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nmap.h"
 
+/**
+ * @brief Prints the scan types selected for execution.
+ *
+ * @param scan_types Bitmask of enabled scan types.
+ */
 void	print_scan_types(int scan_types)
 {
 	printf("Scans to be performed : ");
@@ -30,6 +35,11 @@ void	print_scan_types(int scan_types)
 	printf("\n");
 }
 
+/**
+ * @brief Prints the status of the enabled bonus features.
+ *
+ * @param cfg Pointer to the Nmap configuration.
+ */
 void	print_bonus_intro(t_nmap_cfg *cfg)
 {
 	printf("Bonus : \n");
@@ -65,6 +75,11 @@ void	print_bonus_intro(t_nmap_cfg *cfg)
 		printf(ANSI_RED "(default)" ANSI_RESET "\n");
 }
 
+/**
+ * @brief Prints the scan configuration and starts the scan display.
+ *
+ * @param cfg Pointer to the Nmap configuration.
+ */
 void	print_scan_intro(t_nmap_cfg *cfg)
 {
 	printf(ANSI_MAGENTA "\n ╌╌── ⋆⋆ ╌╌──  Scan Configurations: ╌╌── ⋆⋆ ╌╌── \n" ANSI_RESET);

@@ -6,12 +6,15 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:55 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 11:07:58 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/27 14:19:05 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nmap.h"
 
+/**
+ * @brief Prints the program usage and available command-line options.
+ */
 void	print_usage(void)
 {
 	printf("Usage:\n");

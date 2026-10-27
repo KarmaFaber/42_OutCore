@@ -6,12 +6,19 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:03 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 11:07:07 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/27 14:14:07 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "ft_nmap.h"
 
+/**
+ * @brief Adds a port to the configuration if it is not already present.
+ *
+ * @param port Port number to add.
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 if the port is invalid or the limit is reached.
+ */
 int add_port(int port, t_nmap_cfg *cfg)
 {
 	int	i;
@@ -33,6 +40,13 @@ int add_port(int port, t_nmap_cfg *cfg)
 	return (0);
 }
 
+/**
+ * @brief Parses a port range and adds each port to the configuration.
+ *
+ * @param token String containing the port range.
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 if the range is invalid.
+ */
 int	add_port_range(char *token, t_nmap_cfg *cfg)
 {
 	char	*dash;
@@ -57,6 +71,13 @@ int	add_port_range(char *token, t_nmap_cfg *cfg)
 	return (0);
 }
 
+/**
+ * @brief Parses a port number or range and adds it to the configuration.
+ *
+ * @param token String containing a port number or range.
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 if the token is invalid.
+ */
 int parse_port_token(char *token, t_nmap_cfg *cfg)
 {
 	int port;
@@ -69,6 +90,13 @@ int parse_port_token(char *token, t_nmap_cfg *cfg)
 	return (add_port(port, cfg));
 }
 
+/**
+ * @brief Parses a comma-separated list of ports and ranges.
+ *
+ * @param ports_str String containing the port specifications.
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 if parsing fails.
+ */
 int parse_ports(const char *ports_str, t_nmap_cfg *cfg)
 {
 	char	*copy;
@@ -92,6 +120,13 @@ int parse_ports(const char *ports_str, t_nmap_cfg *cfg)
 	return (0);
 }
 
+/**
+ * @brief Parses the port argument and reports errors if invalid.
+ *
+ * @param arg String containing the port specifications.
+ * @param cfg Pointer to the Nmap configuration.
+ * @return 0 on success, 1 on error.
+ */
 int parse_ports_arg(char *arg, t_nmap_cfg *cfg)
 {
 	if (parse_ports(arg, cfg))
