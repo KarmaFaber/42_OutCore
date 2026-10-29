@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:47 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 14:27:38 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/29 17:47:15 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,20 +14,14 @@
 
 /**
  * @brief Maps port states to ANSI colors:
- *        UNKNOWN: dark gray,
- *        OPEN: bright green,
- *        CLOSED: bright red,
- *        FILTERED: orange,
- *        UNFILTERED: yellow,
- *        OPEN_FILTERED: light gray
  */
 const char	*g_state_colors[MAX_PORT_STATES] = {
-	[ STATE_UNKNOWN ]       = "\001\x1B[90m\002",
-	[ STATE_OPEN ]          = "\001\033[1;32m\002",
-	[ STATE_CLOSED ]        = "\001\033[1;31m\002",
-	[ STATE_FILTERED ]      = "\001\033[38;5;202m\002",
-	[ STATE_UNFILTERED ]    = "\001\033[1;33m\002",
-	[ STATE_OPEN_FILTERED ] = "\001\033[38;5;245m\002"
+	[ STATE_UNKNOWN ]       = ANSI_CGRAY_DARK,
+	[ STATE_OPEN ]          = ANSI_GREEN,
+	[ STATE_CLOSED ]        = ANSI_RED,
+	[ STATE_FILTERED ]      = ANSI_ORANGE_256,
+	[ STATE_UNFILTERED ]    = ANSI_YELLOW,
+	[ STATE_OPEN_FILTERED ] = ANSI_CGRAY_LIGHT
 };
 
 /**

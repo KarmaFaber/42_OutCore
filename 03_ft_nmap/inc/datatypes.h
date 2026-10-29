@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 10:55:02 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 10:55:07 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/29 18:02:37 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@
 #define MAX_PORTS	1024
 
 //#➵⤐──╌╌➣⋆➣── Colors ────────────────➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌➔#
-#define ANSI_RED		"\001\033[1;31m\002"
+#define ANSI_RED		"\001\033[1;31m"
 #define ANSI_GREEN		"\001\033[1;32m\002"
 
 #define ANSI_BLUE		"\001\033[1;34m\002"
@@ -34,6 +34,7 @@
 #define ANSI_ORANGE_256	"\001\033[38;5;214m\002"
 
 #define ANSI_CGRAY_DARK	"\001\x1B[90m\002"
+#define ANSI_CGRAY_LIGHT  "\001\x1B[37m\002"
 
 #define ANSI_RESET		"\001\033[0m\002"
 
@@ -66,7 +67,7 @@ typedef struct s_nmap_cfg
 	int				scan_types;		// Bitmask para manejar varios scans a la vez
 
 	//
-	double		scan_time;		// Tiempo total del escaneo (en segundos)
+	double			scan_time;		// Tiempo total del escaneo (en segundos)
 	/* Variables de Bonus */
 	int				os_detect;		// Booleano para activar la detección de sistema operativo
 	char			*spoof_ip;		// String con la IP falsa
@@ -93,17 +94,31 @@ typedef struct	s_map
 }	t_map;
 
 
-/* Pseudo-cabecera necesaria para calcular el Checksum de TCP y UDP */
+
+/*
++-------------------------------+
+|     Pseudocabecera IP         |  (12 bytes)
++-------------------------------+
+|     Cabecera TCP              |  (mínimo 20 bytes, con campo Checksum = 0)
++-------------------------------+
+|     Datos / Payload           |  (si los hay; en escaneos SYN suele ser 0)
++-------------------------------+
+
+Pseudo-cabecera necesaria para calcular el Checksum de TCP y UDP */
+
 typedef struct s_pseudo_header
 {
-	uint32_t	src_addr;
-	uint32_t	dst_addr;
-	uint8_t		placeholder; // Siempre a 0
+	uint32_t	src_addr;    // IP origen
+	uint32_t	dst_addr;    // IP destino
+	uint8_t		placeholder; // Siempre a 0 (cero)
 	uint8_t		protocol;    // IPPROTO_TCP o IPPROTO_UDP
 	uint16_t	tcp_length;  // Tamaño de la cabecera TCP + Datos
 } t_pseudo_header;
 
-/*
+/* 
+
+todo: solo para parte dev. luego quitar. 
+
 struct addrinfo
 {
 		int              ai_flags;

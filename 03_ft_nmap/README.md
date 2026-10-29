@@ -112,7 +112,11 @@ The TCP interfaces on one side to user or application processes and on the other
 | **FIN** | Finish | Signals that the sender has finished transmitting data and requests to gracefully initiate connection teardown. | Used alone in **FIN scans** or paired in **XMAS scans**. RFC 793 specifies that receiving a `FIN` on a closed port must trigger an `RST`, while an open port must silently discard it. |
 
 **Checksum**:  16 bits. The checksum also covers a 96 bit pseudo header conceptually prefixed to the TCP header.
-	![alt text](img/image_2.png)
+![alt text](img/image_2.png)
+
+To calculate the checksum, you must concatenate the following data blocks vertically into a single continuous buffer:
+
+![alt text](img/image_3.png)
 
 **Options** & **Padding** (0 to 320 bits / 0 to 40 bytes): Additional options (MSS, timestamps, window scale, etc.), padded with zeros to a multiple of 32 bits.
 

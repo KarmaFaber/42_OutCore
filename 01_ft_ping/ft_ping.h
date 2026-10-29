@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_ping.h                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: mzolotar <mzolotar@student.42madrid.com    +#+  +:+       +#+        */
+/*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/06/07 14:40:29 by mzolotar          #+#    #+#             */
-/*   Updated: 2026/06/17 10:45:07 by mzolotar         ###   ########.fr       */
+/*   Updated: 2026/10/29 17:27:17 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
