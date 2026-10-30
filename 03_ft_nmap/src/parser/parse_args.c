@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:06:44 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/30 10:44:35 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 13:02:14 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param cfg Pointer to the Nmap configuration.
  * @return 0 on success, 1 on error.
  */
-int parse_ip_arg(char *arg, t_nmap_cfg *cfg)
+int	parse_ip_arg(char *arg, t_nmap_cfg *cfg)
 {
 	if (!is_valid_ip(arg))
 	{
@@ -37,15 +37,15 @@ int parse_ip_arg(char *arg, t_nmap_cfg *cfg)
  * @param cfg Pointer to the Nmap configuration.
  * @return 0 on success, 1 on error.
  */
-int parse_file_arg(char *arg, t_nmap_cfg *cfg)
+int	parse_file_arg(char *arg, t_nmap_cfg *cfg)
 {
 	FILE	*fp;
 
 	fp = fopen(arg, "r");
 	if (!fp)
 	{
-		fprintf(stderr, ANSI_RED "Error: Cannot open file '%s': %s\n" ANSI_RESET, \
-				arg, strerror(errno));
+		fprintf(stderr, ANSI_RED "Error: Cannot open file '%s': %s\n"
+			ANSI_RESET, arg, strerror(errno));
 		return (1);
 	}
 	fclose(fp);
@@ -60,10 +60,9 @@ int parse_file_arg(char *arg, t_nmap_cfg *cfg)
  * @param cfg Pointer to the Nmap configuration.
  * @return 0 on success, 1 on error.
  */
-int parse_speedup_arg(char *arg, t_nmap_cfg *cfg)
+int	parse_speedup_arg(char *arg, t_nmap_cfg *cfg)
 {
 	cfg->threads = parse_int_range(arg, 0, 250);
-
 	if (cfg->threads == -1)
 	{
 		fprintf(stderr, ANSI_RED
@@ -80,7 +79,7 @@ int parse_speedup_arg(char *arg, t_nmap_cfg *cfg)
  * @param cfg Pointer to the Nmap configuration.
  * @return 0 on success, 1 on error.
  */
-int parse_scan_arg(char *arg, t_nmap_cfg *cfg)
+int	parse_scan_arg(char *arg, t_nmap_cfg *cfg)
 {
 	char	*copy;
 	char	*token;
@@ -93,7 +92,6 @@ int parse_scan_arg(char *arg, t_nmap_cfg *cfg)
 	while (token)
 	{
 		scan = get_scan_type(token);
-
 		if (!scan)
 		{
 			free(copy);

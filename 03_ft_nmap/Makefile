@@ -107,7 +107,8 @@ norm:
 	@echo "$(CURRENT_COLOR)➵⤐──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌── Checking Norminette: ──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌➔$(RESET)"
 	@norminette $(SRC_PATHS) $(INC_DIR)/*.h > file_norminette.log || true
 	@code file_norminette.log
-	@echo "$(CURRENT_COLOR)➵⤐──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌── Norminette completed. Check your output for details. ─╌➣⋆➣╌─⤏➵•➵⤐─╌╌➣⋆➣╌╌─$(RESET)"
+	@echo " Check file_norminette.log for more info.$(RESET)"
+	@echo "$(CURRENT_COLOR)➵⤐──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌── Norminette completed. Check your output for details. ─╌➣⋆➣╌─⤏➵•➵⤐─╌╌➣⋆➣╌╌─"
 
 #◉───▣───▢◇▢───▣───◉•◉───▣───▢  Format ▢───▣───◉•◉───▣───▢◇▢───▣───◉#
 

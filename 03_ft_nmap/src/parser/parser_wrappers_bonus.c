@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:22 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 14:15:28 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 12:59:29 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@
  * @param map Pointer to the scan data and configuration.
  * @return 0 on success.
  */
-int handle_osdetect(char *arg, t_map *map)
+int	handle_osdetect(char *arg, t_map *map)
 {
 	(void)arg;
 	map->cfg.os_detect = 1;
@@ -33,10 +33,11 @@ int handle_osdetect(char *arg, t_map *map)
  * @param map Pointer to the scan data and configuration.
  * @return 0 on success, 1 if the IP address is invalid.
  */
-int handle_spoof(char *arg, t_map *map)
+int	handle_spoof(char *arg, t_map *map)
 {
 	if (!is_valid_ip(arg))
-		return (fprintf(stderr, ANSI_RED "Error: Invalid IP for spoofing\n" ANSI_RESET), 1);
+		return (fprintf(stderr, ANSI_RED "Error: Invalid IP for spoofing\n"
+				ANSI_RESET), 1);
 	map->cfg.spoof_ip = arg;
 	return (0);
 }
@@ -48,7 +49,7 @@ int handle_spoof(char *arg, t_map *map)
  * @param map Pointer to the scan data and configuration.
  * @return 0 on success.
  */
-int handle_badsum(char *arg, t_map *map)
+int	handle_badsum(char *arg, t_map *map)
 {
 	(void)arg;
 	map->cfg.bad_sum = 1;
@@ -62,7 +63,7 @@ int handle_badsum(char *arg, t_map *map)
  * @param map Pointer to the scan data and configuration.
  * @return 0 on success.
  */
-int handle_packettrace(char *arg, t_map *map)
+int	handle_packettrace(char *arg, t_map *map)
 {
 	(void)arg;
 	map->cfg.packet_trace = 1;
@@ -76,9 +77,9 @@ int handle_packettrace(char *arg, t_map *map)
  * @param map Pointer to the scan data and configuration.
  * @return 0 on success, 1 if the value is invalid.
  */
-int handle_ttl(char *arg, t_map *map)
+int	handle_ttl(char *arg, t_map *map)
 {
-	int val;
+	int	val;
 
 	val = parse_int_range(arg, 0, 255);
 	if (val == -1)

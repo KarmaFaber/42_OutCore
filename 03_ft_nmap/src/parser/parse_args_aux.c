@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:06:34 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 14:09:19 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 13:08:41 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,9 +17,9 @@
  *
  * @param ip IP address to validate.
  */
-int is_valid_ip(const char *ip)
+int	is_valid_ip(const char *ip)
 {
-	struct sockaddr_in sa;
+	struct sockaddr_in	sa;
 
 	return (inet_pton(AF_INET, ip, &sa.sin_addr) == 1);
 }
@@ -30,15 +30,14 @@ int is_valid_ip(const char *ip)
  * @param str String representing the port number.
  * @return Port number on success, -1 on error.
  */
-int is_valid_port(const char *str)
+int	is_valid_port(const char *str)
 {
 	char	*endptr;
 	long	port;
 
 	errno = 0;
 	port = strtol(str, &endptr, 10);
-
-	if (errno != 0 || *endptr != '\0' || port < 0 || port > 65535)
+	if (errno != 0 || *endptr != '\0' || port < 1 || port > 65535)
 		return (-1);
 	return ((int)port);
 }
@@ -49,7 +48,7 @@ int is_valid_port(const char *str)
  * @param str String representing the scan type.
  * @return Scan type constant, or 0 if invalid.
  */
-int get_scan_type(const char *str)
+int	get_scan_type(const char *str)
 {
 	if (!strcmp(str, "SYN"))
 		return (SCAN_SYN);
@@ -74,14 +73,13 @@ int get_scan_type(const char *str)
  * @param max Maximum allowed value.
  * @return Parsed integer on success, -1 on error.
  */
-int parse_int_range(const char *str, int min, int max)
+int	parse_int_range(const char *str, int min, int max)
 {
 	char	*endptr;
 	long	value;
 
 	errno = 0;
 	value = strtol(str, &endptr, 10);
-
 	if (errno != 0 || *endptr != '\0' || value < min || value > max)
 		return (-1);
 	return ((int)value);

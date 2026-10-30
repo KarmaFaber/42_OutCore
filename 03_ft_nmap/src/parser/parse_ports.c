@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:03 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/30 11:56:36 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 13:04:44 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,23 +19,21 @@
  * @param cfg Pointer to the Nmap configuration.
  * @return 0 on success, 1 if the port is invalid or the limit is reached.
  */
-int add_port(int port, t_nmap_cfg *cfg)
+int	add_port(int port, t_nmap_cfg *cfg)
 {
 	int	i;
 
 	if (port < 1 || port > 65535)
 		return (1);
-
 	i = 0;
 	while (i < cfg->num_ports)
 	{
 		if (cfg->ports[i] == port)
-			return (0); // Port already exists, do not add
+			return (0);
 		i++;
 	}
 	if (cfg->num_ports >= MAX_PORTS)
 		return (1);
-
 	cfg->ports[cfg->num_ports++] = port;
 	return (0);
 }
@@ -78,9 +76,9 @@ int	add_port_range(char *token, t_nmap_cfg *cfg)
  * @param cfg Pointer to the Nmap configuration.
  * @return 0 on success, 1 if the token is invalid.
  */
-int parse_port_token(char *token, t_nmap_cfg *cfg)
+int	parse_port_token(char *token, t_nmap_cfg *cfg)
 {
-	int port;
+	int	port;
 
 	if (strchr(token, '-'))
 		return (add_port_range(token, cfg));
@@ -97,7 +95,7 @@ int parse_port_token(char *token, t_nmap_cfg *cfg)
  * @param cfg Pointer to the Nmap configuration.
  * @return 0 on success, 1 if parsing fails.
  */
-int parse_ports(const char *ports_str, t_nmap_cfg *cfg)
+int	parse_ports(const char *ports_str, t_nmap_cfg *cfg)
 {
 	char	*copy;
 	char	*token;
@@ -105,17 +103,13 @@ int parse_ports(const char *ports_str, t_nmap_cfg *cfg)
 	copy = strdup(ports_str);
 	if (!copy)
 		return (1);
-
 	token = strtok(copy, ",");
-
 	while (token)
 	{
 		if (parse_port_token(token, cfg))
 			return (free(copy), 1);
-
 		token = strtok(NULL, ",");
 	}
-
 	free(copy);
 	return (0);
 }
@@ -127,12 +121,12 @@ int parse_ports(const char *ports_str, t_nmap_cfg *cfg)
  * @param cfg Pointer to the Nmap configuration.
  * @return 0 on success, 1 on error.
  */
-int parse_ports_arg(char *arg, t_nmap_cfg *cfg)
+int	parse_ports_arg(char *arg, t_nmap_cfg *cfg)
 {
 	if (parse_ports(arg, cfg))
 	{
 		fprintf(stderr,
-			 ANSI_RED "Error: Invalid port specification\n" ANSI_RESET);
+			ANSI_RED "Error: Invalid port specification\n" ANSI_RESET);
 		return (1);
 	}
 	return (0);

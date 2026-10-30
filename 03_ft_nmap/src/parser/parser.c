@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:34 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/30 12:12:29 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 12:57:12 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,9 +23,11 @@ int	validate_config(t_nmap_cfg *cfg)
 	int	i;
 
 	if (!cfg->ip && !cfg->file)
-		return (fprintf(stderr, ANSI_RED "Error: specify --ip or --file\n" ANSI_RESET), 1);
+		return (fprintf(stderr, ANSI_RED "Error: specify --ip or --file\n"
+				ANSI_RESET), 1);
 	if (cfg->ip && cfg->file)
-		return (fprintf(stderr, ANSI_RED "Error: choose either --ip or --file\n" ANSI_RESET), 1);
+		return (fprintf(stderr, ANSI_RED "Error: choose either --ip or --file\n"
+				ANSI_RESET), 1);
 	if (cfg->num_ports == 0)
 	{
 		i = 1;
@@ -37,8 +39,8 @@ int	validate_config(t_nmap_cfg *cfg)
 	}
 	if (cfg->scan_types == 0)
 	{
-		cfg->scan_types = SCAN_SYN | SCAN_NULL | SCAN_FIN \
-						| SCAN_XMAS | SCAN_ACK | SCAN_UDP;
+		cfg->scan_types = SCAN_SYN | SCAN_NULL | SCAN_FIN
+			| SCAN_XMAS | SCAN_ACK | SCAN_UDP;
 	}
 	return (0);
 }
@@ -46,18 +48,18 @@ int	validate_config(t_nmap_cfg *cfg)
 /**
  * @brief Maps command-line options to their handlers.
  */
-static const t_arg_map g_args[] =
+static const t_arg_map	g_args[] =
 {
 	{"--ip", 1, handle_ip},
 	{"--file", 1, handle_file},
 	{"--ports", 1, handle_ports},
 	{"--speedup", 1, handle_speedup},
 	{"--scan", 1, handle_scan},
-	{"--os-detect", 0, handle_osdetect},        /* Modificado: con guion */
-	{"--spoof-ip", 1, handle_spoof},           /* Renombrado para consistencia */
+	{"--os-detect", 0, handle_osdetect},
+	{"--spoof-ip", 1, handle_spoof},
 	{"--badsum", 0, handle_badsum},
-	{"--packet-trace", 0, handle_packettrace},  /* Nuevo Bonus: Sin valor */
-	{"--ttl", 1, handle_ttl},                   /* Nuevo Bonus: Requiere valor */
+	{"--packet-trace", 0, handle_packettrace},
+	{"--ttl", 1, handle_ttl},
 	{NULL, 0, NULL}
 };
 
@@ -69,8 +71,9 @@ static const t_arg_map g_args[] =
  */
 static t_arg_map	*find_arg(const char *key)
 {
-	int i = 0;
+	int	i;
 
+	i = 0;
 	while (g_args[i].key)
 	{
 		if (!strcmp(g_args[i].key, key))
@@ -88,7 +91,7 @@ static t_arg_map	*find_arg(const char *key)
  * @param map Pointer to the scan data and configuration.
  * @return 0 on success, 1 on error.
  */
-int parse_args(int argc, char **argv, t_map *map)
+int	parse_args(int argc, char **argv, t_map *map)
 {
 	int			i;
 	t_arg_map	*arg;
