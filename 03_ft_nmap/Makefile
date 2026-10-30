@@ -44,6 +44,7 @@ SRCS                := \
                     printers/print_usage.c \
                     printers/print_init.c \
 					printers/print_result.c \
+					printers/print_debug.c \
                     \
 					network_engine/network.c \
 					network_engine/pcap_handler.c \
@@ -52,6 +53,7 @@ SRCS                := \
 					\
                     ft_nmap.c \
                     utils.c \
+
 
 SRC_PATHS           := $(addprefix $(SRC_DIR)/,$(SRCS))
 OBJS                := $(addprefix $(OBJ_DIR)/, $(SRCS:.c=.o))

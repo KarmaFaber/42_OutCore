@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:06:44 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 14:10:45 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 10:44:35 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,7 +84,7 @@ int parse_scan_arg(char *arg, t_nmap_cfg *cfg)
 {
 	char	*copy;
 	char	*token;
-	int	 scan;
+	int		scan;
 
 	copy = strdup(arg);
 	if (!copy)

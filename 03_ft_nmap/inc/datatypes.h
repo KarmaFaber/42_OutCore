@@ -6,13 +6,14 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 10:55:02 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/29 18:02:37 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 10:58:16 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef DATATYPES_H
 # define DATATYPES_H
 
+//#➵⤐──╌╌➣⋆➣── Define ───────────────➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌➔#
 #define SCAN_SYN  (1 << 0)
 #define SCAN_NULL (1 << 1)
 #define SCAN_FIN  (1 << 2)
@@ -49,13 +50,6 @@ typedef struct s_arg_map
 	t_arg_handler		handler;
 } t_arg_map;
 
-typedef struct s_port_report
-{
-	//t_port_state		states[6]; // Estado para cada uno de los 6 tipos de scan
-	
-}	t_port_report;
-
-
 typedef struct s_nmap_cfg
 {
 	char			*target_name;   // El string original (ej: "google.com" o "8.8.8.8")
@@ -77,35 +71,7 @@ typedef struct s_nmap_cfg
 } t_nmap_cfg;
 
 
-/* ** function prototypes ** */
-//main struct
-typedef struct	s_map
-{
-	t_nmap_cfg			cfg;
-	//t_pseudo_header		pseudo_header;			// Necesario para calcular el checksum TCP/UDP
-	pcap_t				*pcap_handle;			// Necesario para libpcap
-
-	struct addrinfo		*addrinfo;
-	int					socket_fd;
-
-	/* Matriz de estados: indexada directamente por número de puerto (0-65535) */
-	t_port_report	results[65536];
-	int				detected_os_ttl;			// Almacenará el TTL cazado para el bonus
-}	t_map;
-
-
-
-/*
-+-------------------------------+
-|     Pseudocabecera IP         |  (12 bytes)
-+-------------------------------+
-|     Cabecera TCP              |  (mínimo 20 bytes, con campo Checksum = 0)
-+-------------------------------+
-|     Datos / Payload           |  (si los hay; en escaneos SYN suele ser 0)
-+-------------------------------+
-
-Pseudo-cabecera necesaria para calcular el Checksum de TCP y UDP */
-
+//#➵⤐──╌╌➣⋆➣── IP pseudo-header ─────────────➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌➔#
 typedef struct s_pseudo_header
 {
 	uint32_t	src_addr;    // IP origen
@@ -114,23 +80,6 @@ typedef struct s_pseudo_header
 	uint8_t		protocol;    // IPPROTO_TCP o IPPROTO_UDP
 	uint16_t	tcp_length;  // Tamaño de la cabecera TCP + Datos
 } t_pseudo_header;
-
-/* 
-
-todo: solo para parte dev. luego quitar. 
-
-struct addrinfo
-{
-		int              ai_flags;
-		int              ai_family;
-		int              ai_socktype;
-		int              ai_protocol;
-		socklen_t        ai_addrlen;
-		struct sockaddr *ai_addr;
-		char            *ai_canonname;
-		struct addrinfo *ai_next;
-	};
-*/
 
 //#➵⤐──╌╌➣⋆➣── Port States ─────────────➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌➔#
 typedef enum e_port_state
@@ -143,6 +92,28 @@ typedef enum e_port_state
 	STATE_OPEN_FILTERED,
 	MAX_PORT_STATES /* Nos da automáticamente el tamaño total del array (6) */
 } t_port_state;
+
+typedef struct s_port_report
+{
+	t_port_state		states[6]; // Estado para cada uno de los 6 tipos de scan
+	
+}	t_port_report;
+
+
+//main struct
+typedef struct	s_map
+{
+	t_nmap_cfg			cfg;
+	t_pseudo_header		pseudo_header;			// Necesario para calcular el checksum TCP/UDP
+	pcap_t				*pcap_handle;			// Necesario para libpcap
+
+	struct addrinfo		*addrinfo;
+	int					socket_fd;
+
+	/* Matriz de estados: indexada directamente por número de puerto (0-65535) */
+	t_port_report	results[65536];
+	int				detected_os_ttl;			// Almacenará el TTL cazado para el bonus
+}	t_map;
 
 
 

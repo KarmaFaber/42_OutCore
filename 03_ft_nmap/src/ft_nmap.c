@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:08:04 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/29 17:57:04 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 11:41:44 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,11 +54,15 @@ int	execute_scan_for_target(char *target, t_map *map)
 	//DEBUG TEMPORAL
 	//todo: quitar despues, solo testeo de printesr y colores. 
 	print_scan_results(map, 80, STATE_OPEN);
-	print_scan_results(map, 11, STATE_UNKNOWN);
-	print_scan_results(map, 122, STATE_CLOSED);
-	print_scan_results(map, 133, STATE_FILTERED);
-	print_scan_results(map, 144, STATE_UNFILTERED);
-	print_scan_results(map, 155, STATE_OPEN_FILTERED);
+	//print_scan_results(map, 11, STATE_UNKNOWN);
+	//print_scan_results(map, 122, STATE_CLOSED);
+	//print_scan_results(map, 133, STATE_FILTERED);
+	//print_scan_results(map, 144, STATE_UNFILTERED);
+	//print_scan_results(map, 155, STATE_OPEN_FILTERED);
+
+	printer_debug("POST_DNS_RESOLUTION", map);
+	
+	
 	
 	free(map->cfg.ip);
 	return (0);

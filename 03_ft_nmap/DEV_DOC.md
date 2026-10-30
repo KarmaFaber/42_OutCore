@@ -60,7 +60,11 @@
 ./ft_nmap --file test/test_commands/file.txt --ports 80,443 --scan SYN,ACK --speedup 10
 ./ft_nmap --file test/test_commands/file.txt --ports 1,3-5,8,10-12 --speedup 20
 ./ft_nmap --file test/test_commands/file.txt --speedup 50 --scan SYN,ACK 
-./ft_nmap --file test/test_commands/file.txt --scan SYN,ACK,FIN,XMAS,UDP --ports 22,80-90,443
+./ft_nmap --file test/test_commands/file.txt --scan SYN,ACK,FIN,XMAS,UDP --ports 22,80-190,443
+
+./ft_nmap --file test/test_commands/file_2.txt --ports 22,443 --scan SYN,ACK --speedup 10
+./ft_nmap --file test/test_commands/file_2.txt --ports 22,80-190,443 --scan SYN,ACK --speedup 10
+./ft_nmap --file test/test_commands/file_2.txt --ports 200,80-190,443 --scan SYN,ACK,FIN,XMAS,UDP --speedup 50
 ```
 
 ---

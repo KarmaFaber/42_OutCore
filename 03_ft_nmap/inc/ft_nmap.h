@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:05:32 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/29 17:29:30 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 11:41:21 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -54,7 +54,7 @@ void		init_map(t_map *map);
 int			execute_scan_for_target(char *target_ip, t_map *map);
 //int	main(int argc, char **argv);
 
-
-
+//print_debug.c
+void	printer_debug(const char *tag, const t_map *map);
 
 #endif
