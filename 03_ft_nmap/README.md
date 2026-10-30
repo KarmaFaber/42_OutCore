@@ -41,7 +41,7 @@
 
 
 ---
-# Usage
+## Usage
 
 ```
 Usage:
@@ -78,12 +78,12 @@ Bonus Options:
 ```
 
 
-# Output Examples
+## Output Examples
 
 todo
 
 ---
-# Resources
+## Resources
 
 - [nmap.org](https://nmap.org/)
 
@@ -96,7 +96,7 @@ wide spectrum of communication systems ranging from hard-wired connections to pa
 
 The TCP interfaces on one side to user or application processes and on the other side to a lower level protocol such as Internet Protocol.
 
-## TCP Header Format: RFC 793
+### TCP Header Format: RFC 793
 
 ![alt text](img/TCP_header_RFC_793.jpeg)
 
@@ -123,7 +123,7 @@ To calculate the checksum, you must concatenate the following data blocks vertic
 
 
 ---
-# Scan Types
+## Scan Types
 
 | Scan type (Stealth) | Target Port Status | Expected response (Stack Linux) | status |
 |--|--|--|--|
@@ -133,7 +133,13 @@ To calculate the checksum, you must concatenate the following data blocks vertic
 |XMAS, NULL, FIN **+ SYN** | open | Packet with the SYN-ACK flag (OPEN) | **OPEN** |
 
 ---
-# Code Quality & Static Analysis Compliance
+
+## Tests:
+todo
+
+
+---
+## Code Quality & Static Analysis Compliance
 All C source code strictly adheres to an uncompromising, safety-oriented coding standard inspired by the **Linux Kernel Coding Style** and defensive systems programming guidelines:
 - **Modularity & Complexity Limits**: Functions are capped at 25 lines with strict cyclomatic complexity constraints (maximum of 4 parameters and 5 local variables per function).
 - **Predictable Control Flow**: Prohibition of global variables, goto statements, and uncontrolled side effects to ensure predictable memory states.
@@ -141,7 +147,7 @@ All C source code strictly adheres to an uncompromising, safety-oriented coding 
 - **Automated Style & Linter Enforcement**: Codebase validated against static style conformance linters prior to compilation with strict warning flags (`-Wall -Wextra -Werror`).
 
 ---
-# AI Usage Disclosure
+## AI Usage Disclosure
 
 **Gemini TL:** Custom Gemini Gem acting as a network tutor.
 

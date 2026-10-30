@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:03 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 14:14:07 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 11:56:36 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ int add_port(int port, t_nmap_cfg *cfg)
 {
 	int	i;
 
-	if (port < 0 || port > 65535)
+	if (port < 1 || port > 65535)
 		return (1);
 
 	i = 0;

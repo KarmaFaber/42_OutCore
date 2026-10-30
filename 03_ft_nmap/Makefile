@@ -83,7 +83,7 @@ re: fclean all
 #◉───▣───▢◇▢───▣───◉•◉───▣───▢    Valgrind    ▢───▣───◉•◉───▣───▢◇▢───▣───◉#
 
 valgrind: all
-	@echo "$(CURRENT_COLOR)➵⤐──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌──Running Valgrind..──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌──$(RESET)"
+	@echo "$(CURRENT_COLOR)➵⤐──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌──Running Valgrind.──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌──$(RESET)"
 	@mkdir -p test/valgrind_outputs
 	-sudo $(VALGRIND) ./$(NAME) --ip 8.8.8.8 --ports 2147483648
 	@-test/sh_files/./open_valgrind_log.sh
@@ -94,7 +94,12 @@ clean_valgrind:
 
 #◉───▣───▢◇▢───▣───◉•◉───▣───▢   Test    ▢───▣───◉•◉───▣───▢◇▢───▣───◉#
 
-test: all
+test_parse: all
+	@echo "$(CURRENT_COLOR)➵⤐──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌── Parse Test──╌╌➣⋆➣╌╌──⤏➵•➵⤐──╌╌➣⋆➣╌╌──$(RESET)"
+	@test/sh_files/./test_parsing.sh
+	@echo "$(CURRENT_COLOR)➵⤐╌╌➣⋆➣╌─⤏➵•➵⤐─╌╌➣⋆➣── End ─╌➣⋆➣╌─⤏➵•➵⤐─╌╌➣⋆➣╌╌─$(RESET)"
+
+
 
 #◉───▣───▢◇▢───▣───◉•◉───▣───▢    Norminette    ▢───▣───◉•◉───▣───▢◇▢───▣───◉#
 
@@ -111,4 +116,4 @@ format:
 
 #◉───▣───▢◇▢───▣───◉•◉───▣───▢ Phony targets ▢───▣───◉•◉───▣───▢◇▢───▣───◉#
 
-.PHONY: all clean fclean re valgrind clean_valgrind test norm format
+.PHONY: all clean fclean re valgrind clean_valgrind test norm format test_parse
