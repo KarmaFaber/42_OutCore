@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:08:04 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/30 11:41:44 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 13:45:18 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,7 @@ int	execute_scan_for_target(char *target, t_map *map)
 	char				ip_str[INET_ADDRSTRLEN];
 	int					rc;
 	
-	//todo: hacer una fucnion aparte y sacar el codigo para extractor de IP:
+// --- todo: hacer una fucnion aparte y sacar el codigo para extractor de IP:
 	map->cfg.target_name = target;
 	memset(&hints, 0, sizeof(hints));
 	hints.ai_family = AF_INET;
@@ -42,26 +42,28 @@ int	execute_scan_for_target(char *target, t_map *map)
 		return (1);
 	}
 	freeaddrinfo(res);  // Liberamos la memoria de la consulta de inmediato
+// --- end extractor de IP
 	
 	print_scan_intro(&map->cfg);
 
-	// 2. Aquí irá el motor de red en el siguiente bloque:
+// --- 2. Aquí irá el motor de red en el siguiente bloque:
 	//    - Medir tiempo de inicio con gettimeofday
 	//    - Lanzar los hilos (si threads > 0) o ejecutar secuencial
 	//    - Capturar respuestas con libpcap
 	//    - Imprimir resultados de los puertos y "Scan took X secs"
 
-	//DEBUG TEMPORAL
-	//todo: quitar despues, solo testeo de printesr y colores. 
+// ---  end net engine
+
+// --- DEBUG TEMPORAL
+	//todo: quitar despues los printers de DEBUG y terminar el print_scan_results con formato correcto
 	print_scan_results(map, 80, STATE_OPEN);
 	//print_scan_results(map, 11, STATE_UNKNOWN);
 	//print_scan_results(map, 122, STATE_CLOSED);
 	//print_scan_results(map, 133, STATE_FILTERED);
 	//print_scan_results(map, 144, STATE_UNFILTERED);
 	//print_scan_results(map, 155, STATE_OPEN_FILTERED);
-
 	printer_debug("POST_DNS_RESOLUTION", map);
-	
+// --- end printers DEBUG
 	
 	
 	free(map->cfg.ip);

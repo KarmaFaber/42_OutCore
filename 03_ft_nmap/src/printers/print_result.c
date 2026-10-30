@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:07:47 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/30 13:18:12 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 13:38:51 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,13 +36,7 @@ const char	*g_port_status[MAX_PORT_STATES] = {
 	[ STATE_OPEN_FILTERED ] = "Open|Filtered"
 };
 
-/**
- * @brief Prints the scan duration and the result for a given port.
- *
- * @param map Pointer to the scan data and configuration.
- * @param port Port number that was scanned.
- * @param state Resulting state of the port.
- */
+// todo: finish result scann printer
 void	print_scan_results( t_map *map, int port, t_port_state state)
 {
 
@@ -50,11 +44,7 @@ void	print_scan_results( t_map *map, int port, t_port_state state)
 			state = STATE_UNKNOWN;
 
 	printf(ANSI_MAGENTA "\n ╌╌── ⋆⋆ ╌╌──  Scan Results: ╌╌── ⋆⋆ ╌╌── \n" ANSI_RESET);
-	printf("Scan took %.6f secs\n", map->cfg.scan_time);
 	
-	printf("Port %d: %s%-15s%s\n",
-		   port, 
-		   g_state_colors[state],
-		   g_port_status[state],
-		   ANSI_RESET);
+	printf("Scan took %.6f secs\n", map->cfg.scan_time);
+	printf("Port %d: %s%-15s%s\n", port, g_state_colors[state], g_port_status[state], ANSI_RESET);
 }

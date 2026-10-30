@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/10/27 11:08:10 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/10/27 14:18:55 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/10/30 13:37:08 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,8 +23,6 @@ void	init_map(t_map *map)
 		return ;
 	memset(map, 0, sizeof(t_map));
 	map->socket_fd = -1;
-
 	map->cfg.ttl_value = -1;
 	map->pcap_handle = NULL;
 }
-
