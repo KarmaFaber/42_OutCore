@@ -12,7 +12,8 @@ All implementations strictly adhere to POSIX standards, strict zero-leak memory 
 | :--- | :--- | :--- | :--- |
 | **[ft_ping](./01_ft_ping)** | Low-Level Networking | Raw Sockets (`SOCK_RAW`), ICMP protocol, RFC 1071 checksum calculation, POSIX signals (`SIGALRM`), RTT metric computation (min/avg/max/mdev). GNU `inetutils-2.0` architecture. | ~49 hours |
 | **[ft_traceroute](./02_ft_traceroute)** | Network Diagnostics | Hop-by-hop route tracing, IP header TTL manipulation (`IP_TTL`), ICMP Time Exceeded parsing, socket receive timeouts (`SO_RCVTIMEO`), DNS resolution (`getnameinfo`). | ~49 hours |
-| **[ft_nmap](./03_ft_nmap)** | Network Reconnaissance & Concurrency | Multi-threaded port scanner[cite: 3, 5, 7], packet injection and frame capture with `libpcap`[cite: 5], worker pool concurrency (`pthreads`, up to 250 threads)[cite: 5, 7], advanced scan techniques (SYN, NULL, FIN, XMAS, ACK, UDP)[cite: 7], port-to-service mapping[cite: 7]. | ~120 hours *(In progress)* |
+| **[ft_nmap](./03_ft_nmap)** | Network Reconnaissance & Concurrency | Multi-threaded port scanner, packet injection and frame capture with `libpcap`, worker pool concurrency (`pthreads`, up to 250 threads), advanced scan techniques (SYN, NULL, FIN, XMAS, ACK, UDP), port-to-service mapping. | ~120 hours *(In progress)* |
+| **[malloc](./04_malloc)** | :--- | :--- | ~49 hours *(In progress)* |
 
 ---
 
@@ -34,13 +35,17 @@ All implementations strictly adhere to POSIX standards, strict zero-leak memory 
   - Non-blocking I/O timeouts using `SO_RCVTIMEO` to prevent deadlocks on unresponsive hops.
   - Reverse lookup caching using `getnameinfo` with fallback to dotted-decimal IPv4 formatting.
 
-### 3. `ft_nmap` — High-Throughput Concurrent Port Scanner[cite: 3, 5, 7]
+### 3. `ft_nmap` — High-Throughput Concurrent Port Scanner
 - **Core Standard**: RFC 793 (Transmission Control Protocol), RFC 768 (User Datagram Protocol).
 - **Architecture**:
-  - **Packet Crafting & Sniffing**: Manual TCP/UDP header construction and low-level packet capture via `libpcap` with optimized Berkeley Packet Filters (BPF)[cite: 5, 7].
-  - **Scan Vector Support**: Full implementation of RFC-compliant scan modes: SYN (half-open stealth), NULL (no flags), FIN, XMAS (FIN/PSH/URG), ACK (firewall rule mapping), and raw UDP[cite: 7].
-  - **Concurrency Engine**: Multi-threaded architecture scaling up to 250 parallel workers (`pthreads`) synchronized via mutexes to minimize total scan elapsed time across target port ranges (1–1024 default)[cite: 5, 7].
-  - **Service Resolution**: Internal lookup table resolving standard port assignments (`/etc/services` mapping) to identify host daemons without payload inspection[cite: 7].
+  - **Packet Crafting & Sniffing**: Manual TCP/UDP header construction and low-level packet capture via `libpcap` with optimized Berkeley Packet Filters (BPF).
+  - **Scan Vector Support**: Full implementation of RFC-compliant scan modes: SYN (half-open stealth), NULL (no flags), FIN, XMAS (FIN/PSH/URG), ACK (firewall rule mapping), and raw UDP.
+  - **Concurrency Engine**: Multi-threaded architecture scaling up to 250 parallel workers (`pthreads`) synchronized via mutexes to minimize total scan elapsed time across target port ranges (1–1024 default).
+  - **Service Resolution**: Internal lookup table resolving standard port assignments (`/etc/services` mapping) to identify host daemons without payload inspection.
+
+
+### 4. `malloc` - 
+
 
 ---
 
@@ -63,3 +68,13 @@ All C source code strictly adheres to an uncompromising, safety-oriented coding 
 - **Predictable Control Flow**: Prohibition of global variables, goto statements, and uncontrolled side effects to ensure predictable memory states.
 - **Deterministic Resource Management**: Every allocation is audited for immediate null-pointer validation and symmetric deallocation (zero dangling pointers / zero memory leaks).
 - **Automated Style & Linter Enforcement**: Codebase validated against static style conformance linters prior to compilation with strict warning flags (`-Wall -Wextra -Werror`).
+
+
+---
+## AI Usage Disclosure
+
+**Gemini TL:** Custom Gemini Gem acting as a network tutor. The AI agent is not allowed to provide the completed code.
+
+**ChatGPT:** Used as a second opinion and validation tool, particularly to cross-check Gemini's answers, identify possible hallucinations or incorrect assumptions, and provide alternative approaches.
+
+**GitHub Copilot:** Used as a last-resort tool for repository-wide code analysis and debugging when an issue cannot be solved without AI assistance. It is used when the problem requires the AI to inspect multiple files and understand the project as a whole. It is especially useful for tracing problems across different components and their interactions, where providing the full project context manually to other AI tools would be impractical.
