@@ -6,11 +6,11 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/13 14:40:46 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/14 00:49:14 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/17 12:44:25 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-
+#include "../inc/malloc.h"
 
 /*
 The visual will be formatted by increasing addresses such as:

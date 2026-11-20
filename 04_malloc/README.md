@@ -34,10 +34,13 @@ The goal of this project is to implement a custom dynamic memory allocation mech
 To minimize `mmap()` and `munmap()` system calls, memory is divided into three pre-allocated strategies:
 
 - **TINY** (`1` to `n` bytes): Stored in pre-allocated zones of size `N`.
+	- **1** to **1024** bytes
 - **SMALL** (`n + 1` to `m` bytes): Stored in pre-allocated zones of size `M`.
+	- **1025** to **16.384** bytes
 - **LARGE** (`m + 1` bytes and above): Allocated individually outside standard zones via dedicated `mmap()` calls.
+	- **block** > **16384** bytes
 
-> **Sizing Rules:** Zone sizes `N` and `M` must be multiples of the system page size (`sysconf(_SC_PAGESIZE)` / `getpagesize()`), and each pre-allocated zone must hold **at least 100 allocations** (including internal metadata headers).
+> **Sizing Rules:** Zone sizes `N` and `M` must be multiples of the system page size (`sysconf(_SC_PAGESIZE)` / `getpagesize()`), and each pre-allocated zone must hold **at least 64 allocations** (including internal metadata headers).
 
 ### Visualization (`show_alloc_mem`)
 
@@ -53,8 +56,6 @@ LARGE : 0xB0000
 0xB0020 - 0xBBEEF : 48847 bytes
 Total : 52698 bytes
 ```
-
-
 
 ## Commands
 
@@ -78,9 +79,15 @@ make format # apply norma format to all files
 ### Testing
 
 ```bash
+# valgrind
 make valgrind
 make clean_valgrind
 
+# strace
+make test_strace
+make clean_strace
+
+# 
 make test
 ```
 

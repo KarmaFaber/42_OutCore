@@ -73,8 +73,10 @@ All C source code strictly adheres to an uncompromising, safety-oriented coding 
 ---
 ## AI Usage Disclosure
 
-**Gemini TL:** Custom Gemini Gem acting as a network tutor. The AI agent is not allowed to provide the completed code.
+**Gemini TL:** 
 
-**ChatGPT:** Used as a second opinion and validation tool, particularly to cross-check Gemini's answers, identify possible hallucinations or incorrect assumptions, and provide alternative approaches.
+**ChatGPT:** 
 
-**GitHub Copilot:** Used as a last-resort tool for repository-wide code analysis and debugging when an issue cannot be solved without AI assistance. It is used when the problem requires the AI to inspect multiple files and understand the project as a whole. It is especially useful for tracing problems across different components and their interactions, where providing the full project context manually to other AI tools would be impractical.
+**GitHub Copilot:** 
+
+**Kimi AI:**

@@ -6,7 +6,10 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/13 13:24:55 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/13 13:24:56 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/17 12:44:38 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
+#include "../inc/malloc.h"
+
+//void free(void *ptr);

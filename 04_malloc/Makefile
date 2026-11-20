@@ -22,10 +22,6 @@ SRC_DIR     := src
 OBJ_DIR     := obj
 INC_DIR     := inc
 
-# Test Variables
-TEST_SRC    := ./test/src/main.c
-TEST_BIN    := ./test/test_malloc
-
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ valgrind Variables ▢───▣───▣───◉•◉───▣───◉#
 
 VALGRIND    := valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=all --error-limit=no --log-file=test/valgrind_outputs/valgrind_output_$(shell date +%Y%m%d_%H%M%S).log -s
@@ -39,16 +35,32 @@ STRACE      := strace -e trace=mmap,munmap -o test/strace_outputs/strace_output_
 LIBFT_DIR   := libft
 LIBFT       := $(LIBFT_DIR)/libft.a
 
+#◉───▣───▢◇▢───▣────◉•◉───▣───▢ Test Variables ▢───▣───◉•◉───▣───▣───◉#
+
+TEST_SRC    := ./test/src/main.c ./test/src/debug_printers.c
+TEST_BIN    := ./test/test_malloc
+TEST_DIR	:= test
+
+
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ Includes ▢───▣───▣───▣──▢◇▢───▣───◉#
 
 INCLUDES        := -I$(INC_DIR)
 INCLUDES_LIBFT  := -I$(LIBFT_DIR)
+INCLUDES_TEST   := -I$(TEST_DIR)
 
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ malloc srcs ▢───▣───▣───◉•◉───▣───▢◇▢───◉#
 
 SRCS            := \
                 free.c malloc.c realloc.c \
-                show_alloc_mem.c show_alloc_mem_ex.c
+				\
+				utils_malloc/malloc_utils.c \
+				utils_malloc/all_zones_utils.c \
+				utils_malloc/small_tiny_utils.c \
+				utils_malloc/set_large.c \
+				utils_malloc/set_small.c \
+				utils_malloc/set_tiny.c \
+				\
+				show_alloc_mem.c show_alloc_mem_ex.c
 
 # Full .c paths
 SRC_PATHS   := $(addprefix $(SRC_DIR)/,$(SRCS))
@@ -75,17 +87,18 @@ $(OBJ_DIR):
 	@mkdir -p $(OBJ_DIR)
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
-	$(CC) $(CFLAGS) $(INCLUDES) $(INCLUDES_LIBFT) -c $< -o $@
+	@mkdir -p $(dir $@)
+	$(CC) $(CFLAGS) $(INCLUDES) $(INCLUDES_LIBFT) $(INCLUDES_TEST) -c $< -o $@
 
 $(TEST_BIN): all $(TEST_SRC)
-	$(CC) -Wall -Wextra -Werror $(INCLUDES) $(INCLUDES_LIBFT) $(TEST_SRC) -L. -lft_malloc -Wl,-rpath,. -o $(TEST_BIN)
+	$(CC) -Wall -Wextra -Werror -fPIC $(INCLUDES) $(INCLUDES_LIBFT) $(INCLUDES_TEST) $(TEST_SRC) -L. -lft_malloc -Wl,-rpath,. -o $(TEST_BIN)
 
 clean:
 	$(RM) $(OBJ_DIR)
 	@$(MAKE) -C $(LIBFT_DIR) clean
 	@echo "$(CURRENT_COLOR) 🧹 All object files have been cleaned.\n$(RESET)"
 
-fclean: clean clean_valgrind clean_strace
+fclean: clean
 	$(RM) $(NAME) $(LIB_NAME) $(TEST_BIN)
 	@$(MAKE) -C $(LIBFT_DIR) fclean
 	@echo "$(CURRENT_COLOR) 🧹 $(NAME) & $(LIB_NAME): have been cleaned.\n$(RESET)"
@@ -121,7 +134,6 @@ clean_strace:
 test: $(TEST_BIN)
 	@echo "$(CURRENT_COLOR)➵⤐──╌╌➣⋆➣╌╌── Test──╌╌➣⋆➣╌╌──$(RESET)"
 	@$(TEST_BIN)
-	@-test/sh_files/./run_test.sh
 	@echo "$(CURRENT_COLOR)➵⤐╌╌➣⋆➣── End ─╌➣⋆➣╌─$(RESET)"
 
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ Norminette ▢───▣───◉•◉───▣───▢◇▢───▣───◉#
