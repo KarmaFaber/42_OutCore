@@ -6,40 +6,126 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/20 15:07:16 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/20 15:07:46 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/25 12:08:28 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/malloc.h"
 
-t_zone	*find_zone_for_alloc(t_heap_group group, size_t needed_size)
-{
-	t_zone	*curr;
-
-	curr = g_zones;
-	while (curr != NULL)
-	{
-		if (curr->group == group && curr->free_size >= needed_size)
-			return (curr);
-		curr = curr->next;
-	}
-	return (NULL);
-}
-
+/**
+ * @brief Finds a free block large enough to satisfy the allocation.
+ *
+ * @param zone Zone in which to search for a free block.
+ * @param needed Required allocation size.
+ * @return Pointer to the matching block, or NULL if none is found.
+ */
 t_block	*find_free_block(t_zone *zone, size_t needed)
 {
 	t_block	*block;
+	size_t	payload_offset;
+	size_t	block_end;
 
 	if (!zone || zone->total_size <= sizeof(t_zone) + sizeof(t_block))
 		return (NULL);
 	block = (t_block *)((char *)zone + sizeof(t_zone));
 	while (1)
 	{
-		if (block->is_free && block->size >= needed)
+		payload_offset = ALIGN_16((size_t)((char *)block - (char *)zone)
+				+ sizeof(t_block));
+		block_end = zone->total_size;
+		if (block->next_offset != 0)
+			block_end = block->next_offset;
+		if (block->is_free && block->size >= needed
+			&& zone->free_size >= block->size
+			&& block_end >= payload_offset
+			&& block->size <= block_end - payload_offset)
 			return (block);
 		if (block->next_offset == 0)
 			break ;
 		block = (t_block *)((char *)zone + block->next_offset);
 	}
 	return (NULL);
+}
+
+static int	can_split_block(t_zone *zone, t_block *block, size_t needed,
+		size_t *split_offset)
+{
+	size_t	payload_offset;
+	size_t	block_end;
+	size_t	split_payload_offset;
+
+	payload_offset = ALIGN_16((size_t)((char *)block - (char *)zone)
+			+ sizeof(t_block));
+	block_end = zone->total_size;
+	if (block->next_offset != 0)
+		block_end = block->next_offset;
+	if (payload_offset > SIZE_MAX - 15
+		|| needed > SIZE_MAX - payload_offset - 15)
+		return (0);
+	*split_offset = ALIGN_16(payload_offset + needed);
+	if (block_end < sizeof(t_block)
+		|| *split_offset > UINT32_MAX
+		|| *split_offset > block_end - sizeof(t_block))
+		return (0);
+	split_payload_offset = ALIGN_16(*split_offset + sizeof(t_block));
+	if (split_payload_offset > block_end
+		|| block_end - split_payload_offset < 16)
+		return (0);
+	return (1);
+}
+
+static void	update_next_prev(t_zone *zone, size_t old_next,
+		size_t split_offset)
+{
+	t_block	*next;
+
+	if (old_next == 0)
+		return ;
+	next = (t_block *)((char *)zone + old_next);
+	next->prev_offset = (uint32_t)split_offset;
+}
+
+static void	split_block(t_zone *zone, t_block *block, size_t needed,
+		size_t split_offset)
+{
+	t_block	*split;
+	size_t	free_size;
+	size_t	old_next;
+
+	old_next = block->next_offset;
+	free_size = zone->total_size
+		- ALIGN_16(split_offset + sizeof(t_block));
+	if (old_next != 0)
+		free_size -= zone->total_size - old_next;
+	split = (t_block *)((char *)zone + split_offset);
+	split->size = free_size;
+	split->is_free = 1;
+	split->next_offset = (uint32_t)old_next;
+	split->prev_offset = (uint32_t)((char *)block - (char *)zone);
+	update_next_prev(zone, old_next, split_offset);
+	zone->free_size -= block->size - free_size;
+	block->size = needed;
+	block->is_free = 0;
+	block->next_offset = (uint32_t)split_offset;
+}
+
+void	*allocate_from_zone(t_zone *zone, size_t needed)
+{
+	t_block	*block;
+	size_t	payload_offset;
+	size_t	split_offset;
+
+	block = find_free_block(zone, needed);
+	if (block == NULL)
+		return (NULL);
+	payload_offset = ALIGN_16((size_t)((char *)block - (char *)zone)
+			+ sizeof(t_block));
+	if (!can_split_block(zone, block, needed, &split_offset))
+	{
+		zone->free_size -= block->size;
+		block->is_free = 0;
+		return ((void *)((char *)zone + payload_offset));
+	}
+	split_block(zone, block, needed, split_offset);
+	return ((void *)((char *)zone + payload_offset));
 }

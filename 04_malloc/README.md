@@ -6,18 +6,15 @@ It exposes the following methods:
 
 ```c
 //mandatory part
-void *malloc(size_t size);
-void free(void *ptr);
-void *realloc(void *ptr, size_t size);
+void	*malloc(size_t size);
+void	free(void *ptr);
 
 // Debug calls
-void show_alloc_mem(); // Print informations about allocated zones
-
-//bonus part
-void show_alloc_mem_ex(); // Print a hex dump of the heaps
+void	show_alloc_mem(); // Print informations about allocated zones
+void	show_alloc_mem_ex(); // Print a hex dump of the heaps
 ```
 
-## Subject
+## ⇛ Subject
 
 The goal of this project is to implement a custom dynamic memory allocation mechanism in C that replicates the behavior of standard `libc` functions without modifying or recompiling existing system binaries.
 
@@ -27,7 +24,7 @@ The goal of this project is to implement a custom dynamic memory allocation mech
 - **Global Variables:** Maximum of **1 global variable** allowed to manage memory allocations (plus **1 additional global** if implementing thread-safety).
 - **Allowed Functions:** `mmap(2)`, `munmap(2)`, `getpagesize()` (macOS) / `sysconf(_SC_PAGESIZE)` (Linux), `getrlimit(2)`, `libft` functions, and `libpthread` (for bonus). Using the system `malloc` is strictly forbidden.
 - **Memory Alignment:** Returned pointers must be properly aligned (16-byte alignment on 64-bit architectures).
-- **Error Handling:** Functions must handle errors safely and never trigger undefined behavior or segmentation faults (`malloc` and `realloc` return `NULL` on failure; `free(NULL)` performs no operation).
+- **Error Handling:** Functions must handle errors safely and never trigger undefined behavior or segmentation faults (`malloc` return `NULL` on failure; `free(NULL)` performs no operation).
 
 ### Zone Architecture
 
@@ -42,22 +39,97 @@ To minimize `mmap()` and `munmap()` system calls, memory is divided into three p
 
 > **Sizing Rules:** Zone sizes `N` and `M` must be multiples of the system page size (`sysconf(_SC_PAGESIZE)` / `getpagesize()`), and each pre-allocated zone must hold **at least 64 allocations** (including internal metadata headers).
 
-### Visualization (`show_alloc_mem`)
+### Visualization
+
+main() example:
+
+```C
+int main ()
+{
+	//TINY
+	int *tiny_val;
+	*tiny_val = 42;
+	//SMALL
+	unsigned char *small_buf = (unsigned char *)malloc(2048);
+	//LARGE
+	unsigned char *large_buf = (unsigned char *)malloc(100000);
+
+	show_alloc_mem();
+	show_alloc_mem_ex();
+
+	free(tiny_val);
+	free(small_buf);
+	free(large_buf);
+
+	show_alloc_mem();
+	show_alloc_mem_ex();
+
+	return (0);
+}
+```
+
+#### ↠ `show_alloc_mem()`
 
 Must print the state of currently allocated memory blocks sorted by increasing memory address, followed by the total allocated bytes:
 
 ```text
-TINY : 0xA0000
-0xA0020 - 0xA004A : 42 bytes
-0xA006A - 0xA00BE : 84 bytes
-SMALL : 0xAD000
-0xAD020 - 0xADEAD : 3725 bytes
-LARGE : 0xB0000
-0xB0020 - 0xBBEEF : 48847 bytes
-Total : 52698 bytes
+LARGE : 0x78ffd2645000
+0x78ffd2645040 - 0x78ffd265d6e0 : 100000 bytes
+SMALL : 0x78ffd265e000
+0x78ffd265e040 - 0x78ffd265e840 : 2048 bytes
+TINY : 0x78ffd275f000
+0x78ffd275f040 - 0x78ffd275f050 : 16 bytes
+Total : 102064 bytes
 ```
 
-## Commands
+#### ↠ `show_alloc_mem_ex()`
+
+```text
+=== EX DUMP ===
+LARGE : 0x78ffd2645000
+  total=102400 | free_size=0 | next=0x78ffd265e000
+    [blk 0] 0x78ffd2645040 - 0x78ffd265d6e0 | size=100000 | USED | next_off=0 | prev_off=0
+      bytes[16]: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 | ................
+SMALL : 0x78ffd265e000
+  total=1052672 | free_size=1050528 | next=0x78ffd275f000
+    [blk 0] 0x78ffd265e040 - 0x78ffd265e840 | size=2048 | USED | next_off=2112 | prev_off=0
+      bytes[16]: 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 | ................
+    [blk 1] 0x78ffd265e860 - 0x78ffd275f000 | size=1050528 | FREE | next_off=0 | prev_off=32
+TINY : 0x78ffd275f000
+  total=69632 | free_size=69520 | next=0x0
+    [blk 0] 0x78ffd275f040 - 0x78ffd275f050 | size=16 | USED | next_off=80 | prev_off=0
+      bytes[16]: 2a 00 00 00 00 00 00 00 00 00 00 00 00 00 00 00 | *...............
+    [blk 1] 0x78ffd275f070 - 0x78ffd2770000 | size=69520 | FREE | next_off=0 | prev_off=32
+===============
+```
+
+
+#### ↠ after `free()`
+```text
+--------------------------------------------------
+SMALL : 0x78ffd265e000
+TINY : 0x78ffd275f000
+Total : 0 bytes
+--------------------------------------------------
+=== EX DUMP ===
+SMALL : 0x78ffd265e000
+  total=1052672 | free_size=1052576 | next=0x78ffd275f000
+    [blk 0] 0x78ffd265e040 - 0x78ffd265e840 | size=2048 | FREE | next_off=2112 | prev_off=0
+    [blk 1] 0x78ffd265e860 - 0x78ffd275f000 | size=1050528 | FREE | next_off=0 | prev_off=32
+TINY : 0x78ffd275f000
+  total=69632 | free_size=69536 | next=0x0
+    [blk 0] 0x78ffd275f040 - 0x78ffd275f050 | size=16 | FREE | next_off=80 | prev_off=0
+    [blk 1] 0x78ffd275f070 - 0x78ffd2770000 | size=69520 | FREE | next_off=0 | prev_off=32
+===============
+
+```
+#### Example for FAIL tests:
+![alt text](img/example_fail_test.png)
+#### Example for PASS tests:
+![alt text](img/example_pass_test.png)
+
+
+## ⇛ Commands
 
 ### Build
 
@@ -91,19 +163,29 @@ make clean_strace
 make test
 ```
 
-## Bonus
+`make test` checks allocator state, block reuse, alignment, boundary sizes and allocation overlap. It prints green/red results and returns a failure status when an assertion fails. `make valgrind` runs these checks through `ft_malloc`/`ft_free` so Memcheck tests this allocator rather than replacing the standard `malloc`/`free` symbols.
 
-- Show hex dump of allocated zones with `show_alloc_mem_ex()`
-
-
-### Structure
+## ⇛ Bonus
 
 todo
 
-### Constants
+
+## ⇛ Structure
+
+todo
+
+## ⇛ Constants
 
 For better performance, we preallocate heaps for small malloc calls.
 
 ```c
 todo
 ```
+
+## ⇛ AI Usage Disclosure
+To keep authorship and workflow transparency clear across this project, here is how each AI assistant was used during development:
+
+**Gemini**: Used as a conceptual and systems mentor to guide design decisions, architecture, and debugging workflows without providing implementation code.
+**ChatGPT**: Used strictly for drafting and formatting function documentation.
+**GitHub Copilot**: Used for test structure, formatting, and test harness layout.
+**Kimi AI/Claude**: Not used.

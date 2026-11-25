@@ -24,7 +24,7 @@ INC_DIR     := inc
 
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ valgrind Variables ▢───▣───▣───◉•◉───▣───◉#
 
-VALGRIND    := valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=all --error-limit=no --log-file=test/valgrind_outputs/valgrind_output_$(shell date +%Y%m%d_%H%M%S).log -s
+VALGRIND    := valgrind --leak-check=full --show-leak-kinds=all --track-origins=yes --track-fds=all --error-limit=no --error-exitcode=99 --log-file=test/valgrind_outputs/valgrind_output_$(shell date +%Y%m%d_%H%M%S).log -s
 
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ strace Variables ▢───▣───▣───◉•◉───▣───◉#
 
@@ -37,7 +37,12 @@ LIBFT       := $(LIBFT_DIR)/libft.a
 
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ Test Variables ▢───▣───◉•◉───▣───▣───◉#
 
-TEST_SRC    := ./test/src/main.c ./test/src/debug_printers.c
+TEST_SRC    := ./test/src/main.c \
+				./test/src/debug_printers.c \
+				./test/src/basic.c \
+				./test/src/split_test.c \
+				./test/src/extreme.c \
+				./test/src/utils.c
 TEST_BIN    := ./test/test_malloc
 TEST_DIR	:= test
 
@@ -51,7 +56,7 @@ INCLUDES_TEST   := -I$(TEST_DIR)
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ malloc srcs ▢───▣───▣───◉•◉───▣───▢◇▢───◉#
 
 SRCS            := \
-                free.c malloc.c realloc.c \
+                free.c malloc.c\
 				\
 				utils_malloc/malloc_utils.c \
 				utils_malloc/all_zones_utils.c \
