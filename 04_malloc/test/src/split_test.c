@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/25 12:53:55 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/25 12:56:55 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/26 10:39:13 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,6 @@ static void	fill_pattern(unsigned char *buf, size_t len, unsigned char val)
 		i++;
 	}
 }
-
-
 
 void	split_test(void)
 {

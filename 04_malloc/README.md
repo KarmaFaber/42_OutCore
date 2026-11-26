@@ -1,6 +1,6 @@
 # 42 Malloc
 
-Custom C implementation of the malloc library functions. It creates the shared library `libft_malloc.so` which can be used to replace malloc in any system commands.
+Custom C implementation of dynamic memory allocation (`malloc` and `free`) on Linux using `mmap` and `munmap`, built as a shared library (`libft_malloc.so`) with POSIX mutex thread safety and diagnostic dump helpers.
 
 It exposes the following methods:
 
@@ -10,8 +10,8 @@ void	*malloc(size_t size);
 void	free(void *ptr);
 
 // Debug calls
-void	show_alloc_mem(); // Print informations about allocated zones
-void	show_alloc_mem_ex(); // Print a hex dump of the heaps
+void	show_alloc_mem();
+void	show_alloc_mem_ex();
 ```
 
 ## ⇛ Subject
@@ -26,18 +26,28 @@ The goal of this project is to implement a custom dynamic memory allocation mech
 - **Memory Alignment:** Returned pointers must be properly aligned (16-byte alignment on 64-bit architectures).
 - **Error Handling:** Functions must handle errors safely and never trigger undefined behavior or segmentation faults (`malloc` return `NULL` on failure; `free(NULL)` performs no operation).
 
+### Thread Safety
+
+
+Public allocation and diagnostic entry points synchronize access to allocator metadata using a POSIX mutex (`src/mutex.c`). Diagnostic functions capture a consistent heap snapshot under the lock and format/write the output after releasing it, keeping the critical section short and avoiding reentrant I/O while locked. Build and test targets link with `-pthread`.
+
 ### Zone Architecture
 
 To minimize `mmap()` and `munmap()` system calls, memory is divided into three pre-allocated strategies:
 
-- **TINY** (`1` to `n` bytes): Stored in pre-allocated zones of size `N`.
-	- **1** to **1024** bytes
-- **SMALL** (`n + 1` to `m` bytes): Stored in pre-allocated zones of size `M`.
-	- **1025** to **16.384** bytes
-- **LARGE** (`m + 1` bytes and above): Allocated individually outside standard zones via dedicated `mmap()` calls.
-	- **block** > **16384** bytes
+- **TINY** (`1` to `1024` bytes): Served from pre-allocated `TINY` zones.
+- **SMALL** (`1025` to `16384` bytes): Served from pre-allocated `SMALL` zones.
+- **LARGE** (`> 16384` bytes): Mapped individually via `mmap()` and released directly via `munmap()` on `free()`.
 
-> **Sizing Rules:** Zone sizes `N` and `M` must be multiples of the system page size (`sysconf(_SC_PAGESIZE)` / `getpagesize()`), and each pre-allocated zone must hold **at least 64 allocations** (including internal metadata headers).
+> **Sizing Rules:** Zone sizes `N` and `M` must be multiples of the system page size (`sysconf(_SC_PAGESIZE)`), and each pre-allocated zone must hold at least 64 allocations (including internal metadata headers).
+
+### Project Structure
+
+- `inc/` — Public allocator headers, zone/block definitions, and alignment macros.
+- `libft/` — Selected utility functions used by the allocator and test suite.
+- `src/` — Core `malloc.c`, `free.c`, `mutex.c`, `show_alloc_mem.c`, and `show_alloc_mem_ex.c`, organized with `utils_heap/`, `utils_malloc/`, and `utils_show_alloc/`.
+- `test/` — Test suite (`basic`, `split`, `extreme`, concurrency checks), `strace` runners, and Valgrind logs.
+
 
 ### Visualization
 
@@ -103,7 +113,6 @@ TINY : 0x78ffd275f000
 ===============
 ```
 
-
 #### ↠ after `free()`
 ```text
 --------------------------------------------------
@@ -163,24 +172,7 @@ make clean_strace
 make test
 ```
 
-`make test` checks allocator state, block reuse, alignment, boundary sizes and allocation overlap. It prints green/red results and returns a failure status when an assertion fails. `make valgrind` runs these checks through `ft_malloc`/`ft_free` so Memcheck tests this allocator rather than replacing the standard `malloc`/`free` symbols.
-
-## ⇛ Bonus
-
-todo
-
-
-## ⇛ Structure
-
-todo
-
-## ⇛ Constants
-
-For better performance, we preallocate heaps for small malloc calls.
-
-```c
-todo
-```
+`make test` checks allocator state, block reuse, alignment, boundary sizes, allocation overlap, and concurrent allocation/free calls. It prints green/red results and returns a failure status when an assertion fails. `make valgrind` runs these checks through `ft_malloc`/`ft_free` so Memcheck tests this allocator rather than replacing the standard `malloc`/`free` symbols.
 
 ## ⇛ AI Usage Disclosure
 To keep authorship and workflow transparency clear across this project, here is how each AI assistant was used during development:

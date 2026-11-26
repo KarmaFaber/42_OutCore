@@ -14,7 +14,7 @@ LIB_NAME        = libft_malloc.so
 CC              = gcc
 CFLAGS          = -Wall -Wextra -Werror -fPIC
 FLAGS_LIB       = -shared
-FLAGS_THREDS    = -lpthread
+THREAD_FLAGS    := -pthread
 RM              = rm -rf
 
 # Directories
@@ -42,6 +42,7 @@ TEST_SRC    := ./test/src/main.c \
 				./test/src/basic.c \
 				./test/src/split_test.c \
 				./test/src/extreme.c \
+				./test/src/thread_test.c \
 				./test/src/utils.c
 TEST_BIN    := ./test/test_malloc
 TEST_DIR	:= test
@@ -56,7 +57,12 @@ INCLUDES_TEST   := -I$(TEST_DIR)
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ malloc srcs ▢───▣───▣───◉•◉───▣───▢◇▢───◉#
 
 SRCS            := \
-                free.c malloc.c\
+                free.c malloc.c mutex.c \
+				show_alloc_mem.c show_alloc_mem_ex.c \
+				\
+				utils_heap/heap_snapshot.c \
+				utils_heap/heap_snapshot_count.c \
+				utils_heap/heap_snapshot_copy.c \
 				\
 				utils_malloc/malloc_utils.c \
 				utils_malloc/all_zones_utils.c \
@@ -65,7 +71,8 @@ SRCS            := \
 				utils_malloc/set_small.c \
 				utils_malloc/set_tiny.c \
 				\
-				show_alloc_mem.c show_alloc_mem_ex.c
+				utils_show_alloc/show_alloc_mem_ex_utils.c \
+				utils_show_alloc/get_sorted_zones.c 
 
 # Full .c paths
 SRC_PATHS   := $(addprefix $(SRC_DIR)/,$(SRCS))
@@ -81,7 +88,7 @@ $(LIBFT):
 	$(MAKE) -C $(LIBFT_DIR)
 
 $(NAME): $(LIBFT) $(OBJS)
-	$(CC) $(CFLAGS) $(FLAGS_LIB) -o $(NAME) $(OBJS) -L$(LIBFT_DIR) -lft $(FLAGS_THREDS)
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) $(FLAGS_LIB) -o $(NAME) $(OBJS) -L$(LIBFT_DIR) -lft
 	@echo "$(CURRENT_COLOR) $(NAME) created.\n$(RESET)"
 
 $(LIB_NAME): $(NAME)
@@ -93,10 +100,10 @@ $(OBJ_DIR):
 
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.c | $(OBJ_DIR)
 	@mkdir -p $(dir $@)
-	$(CC) $(CFLAGS) $(INCLUDES) $(INCLUDES_LIBFT) $(INCLUDES_TEST) -c $< -o $@
+	$(CC) $(CFLAGS) $(THREAD_FLAGS) $(INCLUDES) $(INCLUDES_LIBFT) $(INCLUDES_TEST) -c $< -o $@
 
 $(TEST_BIN): all $(TEST_SRC)
-	$(CC) -Wall -Wextra -Werror -fPIC $(INCLUDES) $(INCLUDES_LIBFT) $(INCLUDES_TEST) $(TEST_SRC) -L. -lft_malloc -Wl,-rpath,. -o $(TEST_BIN)
+	$(CC) -Wall -Wextra -Werror -fPIC $(THREAD_FLAGS) $(INCLUDES) $(INCLUDES_LIBFT) $(INCLUDES_TEST) $(TEST_SRC) -L. -lft_malloc -Wl,-rpath,. -o $(TEST_BIN)
 
 clean:
 	$(RM) $(OBJ_DIR)
@@ -145,8 +152,8 @@ test: $(TEST_BIN)
 
 norm:
 	@echo "$(CURRENT_COLOR)➵⤐──╌╌➣⋆➣╌╌── Checking Norminette ──╌╌➣⋆➣╌╌──$(RESET)"
-	@norminette $(SRC_PATHS) $(INC_DIR)/*.h > file_norminette.log || true
-	@code file_norminette.log
+	@norminette $(SRC_PATHS) $(INC_DIR)/*.h > test/file_norminette.log || true
+	@code test/file_norminette.log
 
 #◉───▣───▢◇▢───▣────◉•◉───▣───▢ Format ▢───▣───◉•◉───▣───▢◇▢───▣───◉#
 

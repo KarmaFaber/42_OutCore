@@ -18,6 +18,7 @@
 # define C_TEST_BASIC  "\033[1;34m"
 # define C_TEST_SPLIT  "\033[1;35m"
 # define C_TEST_EDGE   "\033[1;33m"
+# define C_TEST_THREAD "\033[1;36m"
 # define C_ZONE        "\033[1;36m"
 # define C_TINY        "\033[0;32m"
 # define C_SMALL       "\033[0;33m"
@@ -45,6 +46,11 @@
 # define malloc ft_malloc
 # define free ft_free
 
+struct s_thread_args
+{
+	size_t	seed;
+	int		failed;
+};
 
 void	debug_print_zones_chain(void);
 void	debug_dump_state(void);
@@ -52,6 +58,7 @@ void	debug_dump_state(void);
 void	basic_test(void);
 void	split_test(void);
 void	extreme_test(void);
+void	thread_test(void);
 void	print_sep(void);
 void	print_stage(const char *msg, const char *color);
 void	test_check_pointer_state(const char *label, void *ptr,

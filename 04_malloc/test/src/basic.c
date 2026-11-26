@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/25 12:49:09 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/25 13:03:03 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/26 10:37:23 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,4 +53,3 @@ void	basic_test(void)
 
 	print_stage("--- End of basic test ---\n", C_TEST_BASIC);
 }
-

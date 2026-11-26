@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/20 15:06:42 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/25 11:33:42 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/26 10:11:45 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,12 @@ static int	next_free_block_offset(t_zone_ctx *ctx, uint32_t *next_off)
 	return (1);
 }
 
+/**
+ * @brief Initializes the next free block within the zone.
+ *
+ * @param ctx Zone initialization context.
+ * @return Size of the free block, or 0 if it cannot be initialized.
+ */
 size_t	init_next_free_block(t_zone_ctx *ctx)
 {
 	t_block		*next;

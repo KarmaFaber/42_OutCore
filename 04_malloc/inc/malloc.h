@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/13 11:11:21 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/25 12:26:23 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/26 10:43:17 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,9 +30,8 @@
 #include <stdio.h>
 #include <sys/mman.h>
 #include <unistd.h>
-#include <pthread.h>	//theards
-#include <stdint.h>		// uint32_t
-
+#include <pthread.h>
+#include <stdint.h>
 
 /*
 ** data structs
@@ -53,7 +52,6 @@ typedef struct	s_zone {
 	size_t			free_size;
 }				t_zone;
 
-
 /*
 ** A block stores data for each malloc call: "mem_block"
 */
@@ -64,12 +62,10 @@ typedef struct	s_block {
 	uint32_t	prev_offset;
 }	t_block;
 
-
 /*
 ** Global vars
 */
 extern t_zone	*g_zones; // Puntero a la primera zona de nuestra memoria
-
 
 /*
 ** Library methods
@@ -79,17 +75,18 @@ void	free(void *ptr);
 void	*malloc(size_t size);
 void	ft_free(void *ptr);
 void	*ft_malloc(size_t size);
+int		malloc_lock(void);
+int		malloc_unlock(void);
 
 // Debug calls:
 //show_alloc_mem.c
 void	put_hex(uintptr_t addr);
 void	put_dec(size_t n);
 int		get_sorted_zones(t_zone **list);
-void	show_alloc_mem();
+void	show_alloc_mem(void);
 
 //show_alloc_mem_ex.c
-void	show_alloc_mem_ex();
-
+void	show_alloc_mem_ex(void);
 
 /*
 ** Utils stuct -> context data/vars
@@ -112,7 +109,7 @@ typedef struct s_zone_ctx
 ** Utils
 */
 //utils_malloc/malloc_utils.c
-void	init_zone_ctx(t_zone_ctx *ctx, size_t size);
+void	init_zone_ctx(t_zone_ctx *ctx, size_t size, long page_size);
 
 //utils_malloc/all_zones_utils.c
 size_t	get_pages_num(size_t size, size_t ref, size_t page_size);
@@ -134,6 +131,5 @@ void	*set_small_zone(t_zone_ctx *ctx);
 
 //utils_malloc/set_tiny.c
 void	*set_tiny_zone(t_zone_ctx *ctx);
-
 
 #endif

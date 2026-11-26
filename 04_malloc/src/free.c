@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/13 13:24:55 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/25 12:11:52 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/26 10:34:11 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,6 +28,8 @@ static t_zone	*find_zone_by_ptr(void *ptr, t_zone **prev_out)
 
 	curr = g_zones;
 	prev = NULL;
+	if (ptr == NULL)
+		return (NULL);
 	while (curr != NULL)
 	{
 		start = (char *)curr;
@@ -98,25 +100,32 @@ void	ft_free(void *ptr)
 	t_zone	*prev;
 	t_block	*block;
 
-	if (ptr == NULL)
+	if (malloc_lock() != 0)
 		return ;
 	prev = NULL;
 	zone = find_zone_by_ptr(ptr, &prev);
-	if (zone == NULL)
-		return ;
-	if (zone->group == LARGE)
+	if (zone != NULL)
 	{
-		free_large_zone(zone, prev);
-		return ;
+		if (zone->group == LARGE)
+			free_large_zone(zone, prev);
+		else
+		{
+			block = find_block_by_ptr(zone, ptr);
+			if (block != NULL && block->is_free == 0)
+			{
+				block->is_free = 1;
+				zone->free_size += block->size;
+			}
+		}
 	}
-	block = find_block_by_ptr(zone, ptr);
-	if (block != NULL && block->is_free == 0)
-	{
-		block->is_free = 1;
-		zone->free_size += block->size;
-	}
+	(void)malloc_unlock();
 }
 
+/**
+ * @brief Releases allocated memory by calling ft_free.
+ *
+ * @param ptr Pointer to the memory to free.
+ */
 void	free(void *ptr)
 {
 	ft_free(ptr);

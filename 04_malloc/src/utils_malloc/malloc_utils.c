@@ -6,12 +6,20 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/20 15:07:31 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/25 11:34:10 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/26 10:12:37 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../../inc/malloc.h"
 
+/**
+ * @brief Calculates the number of pages required for a zone allocation.
+ *
+ * @param size Requested block size.
+ * @param ref Number of blocks to allocate.
+ * @param page_size System page size in bytes.
+ * @return Number of pages required, or 0 if invalid or overflow occurs.
+ */
 size_t	get_pages_num(size_t size, size_t ref, size_t page_size)
 {
 	size_t	block_overhead;
@@ -38,6 +46,13 @@ size_t	get_pages_num(size_t size, size_t ref, size_t page_size)
 	return (pages_num);
 }
 
+/**
+ * @brief Finds a zone of the specified group with enough free space.
+ *
+ * @param group Heap group to search for.
+ * @param needed_size Required allocation size.
+ * @return Pointer to the matching zone, or NULL if none is found.
+ */
 t_zone	*find_zone_for_alloc(t_heap_group group, size_t needed_size)
 {
 	t_zone	*curr;
@@ -53,15 +68,16 @@ t_zone	*find_zone_for_alloc(t_heap_group group, size_t needed_size)
 }
 
 /**
- * @brief Initializes the zone initialization context.
+ * @brief Initializes the zone allocation context.
  *
  * @param ctx Zone initialization context.
  * @param size Requested allocation size.
+ * @param page_size System page size in bytes.
  */
-void	init_zone_ctx(t_zone_ctx *ctx, size_t size)
+void	init_zone_ctx(t_zone_ctx *ctx, size_t size, long page_size)
 {
 	ft_bzero(ctx, sizeof(t_zone_ctx));
 	ctx->req_size = size;
 	ctx->aligned_size = ALIGN_16(size);
-	ctx->page_size = sysconf(_SC_PAGESIZE);
+	ctx->page_size = page_size;
 }

@@ -1,3 +1,14 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   debug_printers.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2026/11/26 10:37:27 by KarmaFaber        #+#    #+#             */
+/*   Updated: 2026/11/26 10:38:32 by KarmaFaber       ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
 
 #include "inc/test.h"
 
@@ -55,10 +66,10 @@ void	debug_print_zones_chain(void)
 	curr = g_zones;
 	if (curr == NULL)
 	{
-		put_str("[DEBUG] g_zones es NULL (no hay zonas en la lista)\n");
+		put_str("[DEBUG] g_zones it's NULL (there are no areas on the list)\n");
 		return ;
 	}
-	put_str("[DEBUG] Cadena de zonas: ");
+	put_str("[DEBUG] Zone chain: ");
 	while (curr != NULL)
 	{
 		n = snprintf(buf, sizeof(buf), "[%p:%s%s%s] -> ",

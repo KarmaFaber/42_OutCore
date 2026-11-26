@@ -6,7 +6,7 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/20 15:07:16 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/25 12:08:28 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/26 10:14:27 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,6 +47,15 @@ t_block	*find_free_block(t_zone *zone, size_t needed)
 	return (NULL);
 }
 
+/**
+ * @brief Checks whether a free block can be split safely.
+ *
+ * @param zone Zone containing the block.
+ * @param block Block to split.
+ * @param needed Required allocation size.
+ * @param split_offset Pointer to store the split offset.
+ * @return 1 if the block can be split, 0 otherwise.
+ */
 static int	can_split_block(t_zone *zone, t_block *block, size_t needed,
 		size_t *split_offset)
 {
@@ -74,6 +83,13 @@ static int	can_split_block(t_zone *zone, t_block *block, size_t needed,
 	return (1);
 }
 
+/**
+ * @brief Updates the previous offset of the next block after a split.
+ *
+ * @param zone Zone containing the blocks.
+ * @param old_next Offset of the next block before splitting.
+ * @param split_offset Offset of the newly created block.
+ */
 static void	update_next_prev(t_zone *zone, size_t old_next,
 		size_t split_offset)
 {
@@ -85,6 +101,14 @@ static void	update_next_prev(t_zone *zone, size_t old_next,
 	next->prev_offset = (uint32_t)split_offset;
 }
 
+/**
+ * @brief Splits a block and updates the zone and block metadata.
+ *
+ * @param zone Zone containing the block.
+ * @param block Block to split.
+ * @param needed Size required for the allocation.
+ * @param split_offset Offset where the new free block starts.
+ */
 static void	split_block(t_zone *zone, t_block *block, size_t needed,
 		size_t split_offset)
 {
@@ -109,6 +133,13 @@ static void	split_block(t_zone *zone, t_block *block, size_t needed,
 	block->next_offset = (uint32_t)split_offset;
 }
 
+/**
+ * @brief Allocates memory from a free block within an existing zone.
+ *
+ * @param zone Zone from which to allocate memory.
+ * @param needed Required allocation size.
+ * @return Pointer to the allocated payload, or NULL if no block is found.
+ */
 void	*allocate_from_zone(t_zone *zone, size_t needed)
 {
 	t_block	*block;

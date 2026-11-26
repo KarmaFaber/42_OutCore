@@ -6,11 +6,12 @@
 /*   By: KarmaFaber <github.com/KarmaFaber>         +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2026/11/25 12:17:00 by KarmaFaber        #+#    #+#             */
-/*   Updated: 2026/11/25 12:17:51 by KarmaFaber       ###   ########.fr       */
+/*   Updated: 2026/11/26 10:37:14 by KarmaFaber       ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../inc/malloc.h"
+#include "../inc/heap_snapshot.h"
 
 /**
  * @brief Prints a memory address in hexadecimal format.
@@ -68,77 +69,66 @@ void	put_dec(size_t n)
 }
 
 /**
- * @brief Collects and sorts zones by their memory addresses.
+ * @brief Prints allocated blocks within a memory zone.
  *
- * @param list Array used to store the sorted zone pointers.
- * @return Number of zones collected.
+ * @param snapshot Heap snapshot containing the block metadata.
+ * @param zone Zone whose allocated blocks are displayed.
+ * @return Total number of allocated bytes in the zone.
  */
-int	get_sorted_zones(t_zone **list)
+static size_t	print_zone(t_heap_snapshot *snapshot, t_snapshot_zone *zone)
 {
-	t_zone	*curr;
-	t_zone	*tmp;
-	int		n;
-	int		i;
-	int		j;
+	t_snapshot_block	*block;
+	size_t				sum;
+	size_t				i;
 
-	n = 0;
-	curr = g_zones;
-	while (curr && n < MAX_ZONES)
+	sum = 0;
+	i = 0;
+	while (i < zone->block_count)
 	{
-		list[n++] = curr;
-		curr = curr->next;
-	}
-	i = -1;
-	while (++i < n)
-	{
-		j = i;
-		while (++j < n)
+		block = &snapshot->blocks[zone->first_block + i];
+		if (!block->is_free && block->size > 0)
 		{
-			if ((uintptr_t)list[j] < (uintptr_t)list[i])
-			{
-				tmp = list[i];
-				list[i] = list[j];
-				list[j] = tmp;
-			}
+			put_hex(block->payload);
+			ft_putstr_fd(" - ", 1);
+			put_hex(block->payload + block->size);
+			ft_putstr_fd(" : ", 1);
+			put_dec(block->size);
+			ft_putstr_fd(" bytes\n", 1);
+			sum += block->size;
 		}
+		i++;
 	}
-	return (n);
+	return (sum);
 }
 
 /**
- * @brief Prints all allocated blocks within a zone.
+ * @brief Prints all memory zones and the total allocated bytes.
  *
- * @param zone Zone whose allocated blocks are displayed.
- * @return Total size of allocated blocks in bytes.
+ * @param snapshot Heap snapshot containing the memory information.
  */
-static size_t	print_zone(t_zone *zone)
+static void	print_snapshot(t_heap_snapshot *snapshot)
 {
-	t_block		*blk;
-	uintptr_t	start;
-	size_t		sum;
+	size_t	total;
+	size_t	i;
 
-	sum = 0;
-	if (!zone || zone->total_size <= sizeof(t_zone) + sizeof(t_block))
-		return (0);
-	blk = (t_block *)((char *)zone + sizeof(t_zone));
-	while (1)
+	total = 0;
+	i = 0;
+	while (i < snapshot->zone_count)
 	{
-		if (!blk->is_free && blk->size > 0)
-		{
-			start = ALIGN_16((uintptr_t)((char *)blk + sizeof(t_block)));
-			put_hex(start);
-			ft_putstr_fd(" - ", 1);
-			put_hex(start + blk->size);
-			ft_putstr_fd(" : ", 1);
-			put_dec(blk->size);
-			ft_putstr_fd(" bytes\n", 1);
-			sum += blk->size;
-		}
-		if (blk->next_offset == 0)
-			break ;
-		blk = (t_block *)((char *)zone + blk->next_offset);
+		if (snapshot->zones[i].group == TINY)
+			ft_putstr_fd("TINY : ", 1);
+		else if (snapshot->zones[i].group == SMALL)
+			ft_putstr_fd("SMALL : ", 1);
+		else
+			ft_putstr_fd("LARGE : ", 1);
+		put_hex(snapshot->zones[i].address);
+		ft_putstr_fd("\n", 1);
+		total += print_zone(snapshot, &snapshot->zones[i]);
+		i++;
 	}
-	return (sum);
+	ft_putstr_fd("Total : ", 1);
+	put_dec(total);
+	ft_putstr_fd(" bytes\n", 1);
 }
 
 /**
@@ -148,27 +138,14 @@ static size_t	print_zone(t_zone *zone)
  */
 void	show_alloc_mem(void)
 {
-	t_zone	*zones[MAX_ZONES];
-	size_t	total;
-	int		count;
-	int		i;
+	t_heap_snapshot	*snapshot;
 
-	total = 0;
-	count = get_sorted_zones(zones);
-	i = -1;
-	while (++i < count)
+	snapshot = heap_snapshot_create();
+	if (!snapshot)
 	{
-		if (zones[i]->group == TINY)
-			ft_putstr_fd("TINY : ", 1);
-		else if (zones[i]->group == SMALL)
-			ft_putstr_fd("SMALL : ", 1);
-		else
-			ft_putstr_fd("LARGE : ", 1);
-		put_hex((uintptr_t)zones[i]);
-		ft_putstr_fd("\n", 1);
-		total += print_zone(zones[i]);
+		(void)write(2, "show_alloc_mem: snapshot failed\n", 32);
+		return ;
 	}
-	ft_putstr_fd("Total : ", 1);
-	put_dec(total);
-	ft_putstr_fd(" bytes\n", 1);
+	print_snapshot(snapshot);
+	heap_snapshot_destroy(snapshot);
 }
